@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Editor de Config — DROPNET</title>
+<title>Editor de Config — DROPNET 5G</title>
 <style>
 :root {
   --bg-fora: #c7c4ec;
@@ -76,7 +76,9 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--r
 .item-lista {
   padding: 12px 14px; background: var(--card-branco); border-radius: 14px; margin: 8px 0;
   border-left: 4px solid var(--roxo); box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  display: flex; align-items: center; gap: 10px;
 }
+.item-lista .info-item { flex: 1; min-width: 0; }
 .item-lista .nome { font-weight: 700; font-size: 14px; }
 .item-lista .sub { font-size: 12px; color: var(--texto-claro); display: block; margin-top: 2px; }
 .item-lista .acoes { display: flex; gap: 8px; margin-top: 10px; }
@@ -86,6 +88,17 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--r
 }
 .acao-editar { background: #e0e7ff; color: #3730a3; }
 .acao-excluir { background: #fee2e2; color: #dc2626; }
+
+.ordem-botoes {
+  display: flex; flex-direction: column; gap: 4px; flex-shrink: 0;
+}
+.ordem-botoes button {
+  width: 32px; height: 32px; border: none; border-radius: 8px; cursor: pointer;
+  font-size: 14px; font-weight: 800; background: #e3e1f7; color: var(--roxo-escuro);
+  display: flex; align-items: center; justify-content: center;
+}
+.ordem-botoes button:disabled { opacity: 0.35; cursor: not-allowed; }
+.ordem-botoes button:active:not(:disabled) { background: var(--roxo); color: white; }
 
 .vazio { font-size: 12.5px; color: var(--texto-claro); text-align: center; padding: 10px; }
 
@@ -114,7 +127,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--r
   <!-- TELA 1 — COLAR O JSON -->
   <div class="card" id="tela-colar">
     <div class="topo">
-      <h1>EDITOR<br>CONFIG DROPNET</h1>
+      <h1>EDITOR<br>CONFIG DROPNET 5G</h1>
       <span class="pilula">COLE · EDITE · GERE</span>
     </div>
     <div class="aviso">Cole o JSON do seu app abaixo e toque em Carregar para editar cada campo.</div>
@@ -173,10 +186,12 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--r
       <div id="listaUdp"></div>
 
       <h3>🖥️ Servidores (todos)</h3>
+      <div class="aviso">Use as setinhas ▲▼ para mudar a ordem. O primeiro da lista é o que aparece no topo do app.</div>
       <button class="btn btn-roxo" style="width:100%; margin-bottom:10px;" onclick="adicionarServidor()">+ Adicionar Servidor</button>
       <div id="listaServidores"></div>
 
       <h3>📋 Redes / Payloads</h3>
+      <div class="aviso">Use as setinhas ▲▼ para mudar a ordem. O primeiro da lista é o que aparece no topo do app.</div>
       <button class="btn btn-roxo" style="width:100%; margin-bottom:10px;" onclick="adicionarRede()">+ Adicionar Rede</button>
       <div id="listaRedes"></div>
 
@@ -323,6 +338,29 @@ function preencherCampos() {
   renderizarRedes();
 }
 
+// ---------- Reordenação (genérica) ----------
+// Move o item da posição idx para idx-1 (subir) ou idx+1 (descer)
+function moverItemArray(array, idx, direcao) {
+  const novoIdx = idx + direcao;
+  if (novoIdx < 0 || novoIdx >= array.length) return;
+  const temp = array[idx];
+  array[idx] = array[novoIdx];
+  array[novoIdx] = temp;
+}
+
+function moverServidor(idx, direcao) {
+  moverItemArray(dados.Servers, idx, direcao);
+  renderizarServidores();
+}
+function moverRede(idx, direcao) {
+  moverItemArray(dados.Networks, idx, direcao);
+  renderizarRedes();
+}
+function moverUdp(idx, direcao) {
+  moverItemArray(dados.Udp, idx, direcao);
+  renderizarUdp();
+}
+
 // ---------- Listas (Udp / Servidores / Redes) ----------
 function renderizarUdp() {
   const lista = document.getElementById('listaUdp');
@@ -332,10 +370,16 @@ function renderizarUdp() {
     const div = document.createElement('div');
     div.className = 'item-lista';
     div.innerHTML = `
-      <span class="nome">Porta ${u.Porta ?? ''}</span>
-      <div class="acoes">
-        <button class="acao-editar" onclick="editarUdp(${idx})">✏️ Editar</button>
-        <button class="acao-excluir" onclick="excluirUdp(${idx})">🗑️ Excluir</button>
+      <div class="ordem-botoes">
+        <button onclick="moverUdp(${idx}, -1)" ${idx === 0 ? 'disabled' : ''}>▲</button>
+        <button onclick="moverUdp(${idx}, 1)" ${idx === dados.Udp.length - 1 ? 'disabled' : ''}>▼</button>
+      </div>
+      <div class="info-item">
+        <span class="nome">Porta ${u.Porta ?? ''}</span>
+        <div class="acoes">
+          <button class="acao-editar" onclick="editarUdp(${idx})">✏️ Editar</button>
+          <button class="acao-excluir" onclick="excluirUdp(${idx})">🗑️ Excluir</button>
+        </div>
       </div>`;
     lista.appendChild(div);
   });
@@ -348,11 +392,17 @@ function renderizarServidores() {
     const div = document.createElement('div');
     div.className = 'item-lista';
     div.innerHTML = `
-      <span class="nome">${s.Name || '(sem nome)'}</span>
-      <span class="sub">${s.ServerIP || ''} · ${s.TYPE || ''}</span>
-      <div class="acoes">
-        <button class="acao-editar" onclick="editarServidor(${idx})">✏️ Editar</button>
-        <button class="acao-excluir" onclick="excluirServidor(${idx})">🗑️ Excluir</button>
+      <div class="ordem-botoes">
+        <button onclick="moverServidor(${idx}, -1)" ${idx === 0 ? 'disabled' : ''}>▲</button>
+        <button onclick="moverServidor(${idx}, 1)" ${idx === dados.Servers.length - 1 ? 'disabled' : ''}>▼</button>
+      </div>
+      <div class="info-item">
+        <span class="nome">${s.Name || '(sem nome)'}</span>
+        <span class="sub">${s.ServerIP || ''} · ${s.TYPE || ''}</span>
+        <div class="acoes">
+          <button class="acao-editar" onclick="editarServidor(${idx})">✏️ Editar</button>
+          <button class="acao-excluir" onclick="excluirServidor(${idx})">🗑️ Excluir</button>
+        </div>
       </div>`;
     lista.appendChild(div);
   });
@@ -365,11 +415,17 @@ function renderizarRedes() {
     const div = document.createElement('div');
     div.className = 'item-lista';
     div.innerHTML = `
-      <span class="nome">${rede.Name || '(sem nome)'}</span>
-      <span class="sub">${rede.FLAG || ''} · ${rede.Info || ''}</span>
-      <div class="acoes">
-        <button class="acao-editar" onclick="editarRede(${idx})">✏️ Editar</button>
-        <button class="acao-excluir" onclick="excluirRede(${idx})">🗑️ Excluir</button>
+      <div class="ordem-botoes">
+        <button onclick="moverRede(${idx}, -1)" ${idx === 0 ? 'disabled' : ''}>▲</button>
+        <button onclick="moverRede(${idx}, 1)" ${idx === dados.Networks.length - 1 ? 'disabled' : ''}>▼</button>
+      </div>
+      <div class="info-item">
+        <span class="nome">${rede.Name || '(sem nome)'}</span>
+        <span class="sub">${rede.FLAG || ''} · ${rede.Info || ''}</span>
+        <div class="acoes">
+          <button class="acao-editar" onclick="editarRede(${idx})">✏️ Editar</button>
+          <button class="acao-excluir" onclick="excluirRede(${idx})">🗑️ Excluir</button>
+        </div>
       </div>`;
     lista.appendChild(div);
   });
@@ -408,6 +464,7 @@ function gerarJSON() {
   dados.DnsPrimario = val('edt_DnsPrimario');
   dados.DnsSecundario = val('edt_DnsSecundario');
   // Servers, Udp e Networks já ficam atualizados nos próprios arrays (dados.Servers / dados.Udp / dados.Networks)
+  // A ordem desses arrays é a ordem que você definiu com as setinhas ▲▼, e essa ordem é preservada no JSON final.
 
   document.getElementById('saidaJSON').value = JSON.stringify(dados, null, 4);
   mostrarTela('resultado');
