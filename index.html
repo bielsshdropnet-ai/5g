@@ -3,93 +3,139 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Editor JSON — DROPNET</title>
+<title>Editor de Config — DROPNET</title>
 <style>
 :root {
-  --fundo: #e6e6fa;
-  --card: #ffffff;
-  --primaria: #4f46e5;
-  --sucesso: #16a34a;
-  --perigo: #dc2626;
-  --texto: #1f2937;
-  --texto-claro: #6b7280;
-  --borda: #d1d5db;
+  --bg-fora: #c7c4ec;
+  --card: #f3f1fc;
+  --card-branco: #ffffff;
+  --roxo: #8783e6;
+  --roxo-escuro: #4b3fd6;
+  --azul: #1c1ce0;
+  --rosa: #e6398f;
+  --verde: #16a34a;
+  --vermelho: #dc2626;
+  --texto: #2c2a4a;
+  --texto-claro: #6b6890;
+  --borda: #c9c5f0;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
-body { background: #c4c4e0; min-height: 100vh; padding: 16px; color: var(--texto); }
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+body { background: var(--bg-fora); min-height: 100vh; padding: 18px 14px; color: var(--texto); }
 .container { max-width: 420px; margin: 0 auto; }
 
 .card {
-  background: var(--card); border-radius: 16px; padding: 20px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 16px;
+  background: var(--card); border-radius: 20px; padding: 22px 18px;
+  box-shadow: 0 6px 20px rgba(75, 63, 214, 0.18); margin-bottom: 16px;
 }
 
-h2 { font-size: 18px; margin-bottom: 12px; color: var(--primaria); }
-h3 { font-size: 15px; margin: 16px 0 8px; border-bottom: 1px solid #eee; padding-bottom: 4px; }
+.topo { text-align: center; margin-bottom: 18px; }
+.topo h1 {
+  font-size: 26px; font-weight: 800; color: var(--roxo-escuro);
+  letter-spacing: 0.5px; line-height: 1.15;
+}
+.pilula {
+  display: inline-block; background: var(--rosa); color: white;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+  padding: 6px 16px; border-radius: 20px; margin-top: 10px;
+}
+
+h3 {
+  font-size: 14px; margin: 18px 0 10px; color: var(--roxo-escuro);
+  font-weight: 700; border-bottom: 2px solid var(--borda); padding-bottom: 6px;
+}
+
+label { font-size: 12px; color: var(--texto-claro); font-weight: 600; display: block; margin-bottom: 4px; margin-top: 8px; }
 
 textarea, input, select {
-  width: 100%; padding: 10px 12px; border: 1px solid var(--borda);
-  border-radius: 8px; font-size: 14px; margin-bottom: 8px;
+  width: 100%; padding: 11px 14px; border: 2px solid var(--borda);
+  border-radius: 24px; font-size: 14px; background: var(--card-branco); color: var(--texto);
 }
-textarea { min-height: 100px; resize: vertical; font-family: monospace; font-size: 12px; }
+textarea { border-radius: 14px; min-height: 100px; resize: vertical; font-family: 'Consolas', monospace; font-size: 12px; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--roxo); }
+
+.grade-botoes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 6px; }
 
 .btn {
-  width: 100%; border: none; border-radius: 10px; padding: 13px;
-  font-size: 15px; font-weight: 600; cursor: pointer; margin: 6px 0;
+  border: none; border-radius: 14px; padding: 14px 10px;
+  font-size: 13px; font-weight: 700; cursor: pointer; color: white;
+  display: flex; align-items: center; justify-content: center; gap: 6px; text-align: center;
 }
-.btn-primario { background: var(--primaria); color: white; }
-.btn-sucesso { background: var(--sucesso); color: white; }
-.btn-perigo { background: var(--perigo); color: white; }
-.btn-aviso { background: #f59e0b; color: white; }
+.btn-roxo { background: var(--roxo); }
+.btn-largo { grid-column: span 2; }
+.btn-azul { background: var(--azul); font-size: 16px; padding: 16px; margin-top: 14px; border-radius: 14px; }
+.btn-sucesso { background: var(--verde); }
+.btn-perigo { background: var(--vermelho); }
+.btn-neutro { background: #e3e1f7; color: var(--roxo-escuro); }
 
 .aviso {
-  background: #fffbeb; border-left: 4px solid #f59e0b; padding: 10px;
-  border-radius: 6px; margin-bottom: 12px; font-size: 13px;
+  background: #fff4e0; border-left: 4px solid #f59e0b; padding: 10px 12px;
+  border-radius: 10px; margin-bottom: 14px; font-size: 12.5px; color: #7a5b06;
 }
 
-.item-rede {
-  padding: 12px; background: #f9fafb; border-radius: 8px; margin: 8px 0;
-  border-left: 3px solid var(--primaria);
+.item-lista {
+  padding: 12px 14px; background: var(--card-branco); border-radius: 14px; margin: 8px 0;
+  border-left: 4px solid var(--roxo); box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
-.item-rede .acoes { display: flex; gap: 8px; margin-top: 8px; }
-.item-rede button { flex: 1; padding: 8px; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; }
+.item-lista .nome { font-weight: 700; font-size: 14px; }
+.item-lista .sub { font-size: 12px; color: var(--texto-claro); display: block; margin-top: 2px; }
+.item-lista .acoes { display: flex; gap: 8px; margin-top: 10px; }
+.item-lista .acoes button {
+  flex: 1; padding: 9px; border: none; border-radius: 10px; cursor: pointer;
+  font-size: 12.5px; font-weight: 700;
+}
+.acao-editar { background: #e0e7ff; color: #3730a3; }
+.acao-excluir { background: #fee2e2; color: #dc2626; }
+
+.vazio { font-size: 12.5px; color: var(--texto-claro); text-align: center; padding: 10px; }
 
 .oculto { display: none !important; }
-.area-botoes { display: flex; gap: 10px; margin-top: 10px; }
-.area-botoes button { flex: 1; }
+
+.rodape-botoes { display: flex; gap: 10px; margin-top: 18px; }
+.rodape-botoes button { flex: 1; }
+
+.modal-fundo {
+  display: none; position: fixed; inset: 0; background: rgba(30, 20, 70, 0.5);
+  padding: 16px; z-index: 100; overflow-y: auto;
+}
+.modal-caixa {
+  background: white; border-radius: 18px; padding: 20px; max-width: 400px;
+  margin: 30px auto; max-height: 85vh; overflow-y: auto;
+}
+.modal-caixa h3 { margin-top: 0; }
+.modal-rodape { display: flex; gap: 10px; margin-top: 16px; }
+.modal-rodape button { flex: 1; padding: 12px; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; }
 </style>
 </head>
 <body>
 
 <div class="container">
+
   <!-- TELA 1 — COLAR O JSON -->
   <div class="card" id="tela-colar">
-    <h2>📋 Cole seu JSON aqui</h2>
-    <div class="aviso">
-      Tire o JSON do seu aplicativo, cole aqui e clique em <strong>Carregar</strong>. Depois edite do jeito que quiser!
+    <div class="topo">
+      <h1>EDITOR<br>CONFIG DROPNET</h1>
+      <span class="pilula">COLE · EDITE · GERE</span>
     </div>
+    <div class="aviso">Cole o JSON do seu app abaixo e toque em Carregar para editar cada campo.</div>
+    <label>JSON de entrada</label>
     <textarea id="entradaJSON" placeholder="Cole o JSON aqui..."></textarea>
-    <button class="btn btn-primario" onclick="carregarJSON()">✅ Carregar e Editar</button>
+    <button class="btn btn-azul btn-largo" style="width:100%;" onclick="carregarJSON()">✅ Carregar e Editar</button>
   </div>
 
   <!-- TELA 2 — EDITAR TUDO -->
   <div id="tela-edicao" class="oculto">
     <div class="card">
-      <h2>✏️ Editar Configurações</h2>
-      
-      <h3>📌 Versão & Links Principais</h3>
-      <label>Versão</label>
-      <input type="number" id="edt_Version">
-      
-      <label>PainelConecta5G</label>
-      <input type="text" id="edt_PainelConecta5G">
-      
-      <label>ReleaseNotes</label>
-      <input type="text" id="edt_ReleaseNotes">
-      
-      <label>UrlUpdate</label>
-      <input type="text" id="edt_UrlUpdate">
+      <div class="topo">
+        <h1>PAINEL<br>DE EDIÇÃO</h1>
+        <span class="pilula" id="versaoTopo">VERSÃO —</span>
+      </div>
+
+      <h3>📌 Versão &amp; Links Principais</h3>
+      <label>Versão</label><input type="number" id="edt_Version">
+      <label>PainelConecta5G</label><input type="text" id="edt_PainelConecta5G">
+      <label>ReleaseNotes</label><input type="text" id="edt_ReleaseNotes">
+      <label>UrlUpdate</label><input type="text" id="edt_UrlUpdate">
 
       <h3>🔗 Links Gerais</h3>
       <label>Sms</label><input type="text" id="edt_Sms">
@@ -103,10 +149,7 @@ textarea { min-height: 100px; resize: vertical; font-family: monospace; font-siz
       <label>ModderLinkWhatsapp</label><input type="text" id="edt_ModderLinkWhatsapp">
       <label>ModderLinkTelegram</label><input type="text" id="edt_ModderLinkTelegram">
       <label>CheckUser</label>
-      <select id="edt_CheckUser">
-        <option value="true">true</option>
-        <option value="false">false</option>
-      </select>
+      <select id="edt_CheckUser"><option value="true">true</option><option value="false">false</option></select>
 
       <h3>🎨 Cores</h3>
       <label>ModderCorCaixaServ</label><input type="text" id="edt_ModderCorCaixaServ">
@@ -121,33 +164,25 @@ textarea { min-height: 100px; resize: vertical; font-family: monospace; font-siz
       <label>ModderCorBotaoLog</label><input type="text" id="edt_ModderCorBotaoLog">
       <label>ModderCorBotaoConfig</label><input type="text" id="edt_ModderCorBotaoConfig">
 
-      <h3>🌐 DNS & UDP</h3>
+      <h3>🌐 DNS</h3>
       <label>DnsPrimario</label><input type="text" id="edt_DnsPrimario">
       <label>DnsSecundario</label><input type="text" id="edt_DnsSecundario">
-      <label>Udp — Porta</label><input type="text" id="edt_UdpPorta">
 
-      <h3>🖥️ Servidor</h3>
-      <label>Name</label><input type="text" id="edt_ServerName">
-      <label>TYPE</label>
-      <select id="edt_ServerType">
-        <option value="free">free</option>
-        <option value="premium">premium</option>
-      </select>
-      <label>FLAG</label><input type="text" id="edt_ServerFlag">
-      <label>ServerIP</label><input type="text" id="edt_ServerIP">
-      <label>CheckUser</label><input type="text" id="edt_ServerCheckUser">
-      <label>ServerPort</label><input type="text" id="edt_ServerPort">
-      <label>SSLPort</label><input type="text" id="edt_ServerSSLPort">
-      <label>USER</label><input type="text" id="edt_ServerUSER">
-      <label>PASS</label><input type="text" id="edt_ServerPASS">
+      <h3>🔌 Portas UDP (todas)</h3>
+      <button class="btn btn-roxo" style="width:100%; margin-bottom:10px;" onclick="adicionarUdp()">+ Adicionar Porta UDP</button>
+      <div id="listaUdp"></div>
+
+      <h3>🖥️ Servidores (todos)</h3>
+      <button class="btn btn-roxo" style="width:100%; margin-bottom:10px;" onclick="adicionarServidor()">+ Adicionar Servidor</button>
+      <div id="listaServidores"></div>
 
       <h3>📋 Redes / Payloads</h3>
-      <button class="btn btn-primario" style="margin-bottom:10px;" onclick="adicionarRede()">+ Adicionar Rede</button>
+      <button class="btn btn-roxo" style="width:100%; margin-bottom:10px;" onclick="adicionarRede()">+ Adicionar Rede</button>
       <div id="listaRedes"></div>
 
-      <div class="area-botoes">
-        <button class="btn btn-aviso" onclick="voltarParaColar()">⬅️ Voltar</button>
-        <button class="btn btn-sucesso" onclick="gerarJSON()">💾 Gerar JSON Final</button>
+      <div class="rodape-botoes">
+        <button class="btn btn-neutro" onclick="voltarParaColar()">⬅️ Voltar</button>
+        <button class="btn btn-sucesso" onclick="gerarJSON()">💾 Gerar JSON</button>
       </div>
     </div>
   </div>
@@ -155,70 +190,94 @@ textarea { min-height: 100px; resize: vertical; font-family: monospace; font-siz
   <!-- TELA 3 — JSON PRONTO -->
   <div id="tela-resultado" class="oculto">
     <div class="card">
-      <h2>✅ JSON Pronto!</h2>
-      <div class="aviso">Copie tudo e cole direto no seu aplicativo!</div>
-      <textarea id="saidaJSON" readonly style="min-height: 200px;"></textarea>
-      <button class="btn btn-sucesso" onclick="copiarSaida()">📋 Copiar Tudo</button>
-      <button class="btn btn-primario" onclick="voltarEditar()">✏️ Editar Novamente</button>
-      <button class="btn btn-perigo" onclick="voltarInicio()">🔄 Carregar Outro JSON</button>
+      <div class="topo">
+        <h1>JSON<br>PRONTO ✅</h1>
+        <span class="pilula">COPIE E COLE NO APP</span>
+      </div>
+      <textarea id="saidaJSON" readonly style="min-height: 220px;"></textarea>
+      <div class="grade-botoes">
+        <button class="btn btn-sucesso btn-largo" onclick="copiarSaida()">📋 Copiar Tudo</button>
+        <button class="btn btn-roxo" onclick="voltarEditar()">✏️ Editar de Novo</button>
+        <button class="btn btn-perigo" onclick="voltarInicio()">🔄 Carregar Outro</button>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- MODAL — EDITAR/ADICIONAR REDE -->
-<div id="modalRede" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); padding:20px; z-index:100;">
-  <div style="background:white; border-radius:12px; padding:20px; max-width:400px; margin:0 auto; max-height:90vh; overflow-y:auto;">
+<!-- MODAL — REDE -->
+<div id="modalRede" class="modal-fundo">
+  <div class="modal-caixa">
     <h3 id="tituloModalRede">Adicionar Rede</h3>
-    
     <label>Name</label><input type="text" id="modal_Nome">
     <label>FLAG</label>
-    <select id="modal_Flag">
-      <option value="">Nenhuma</option>
-      <option value="claro">claro</option>
-      <option value="vivo">vivo</option>
-      <option value="tim">tim</option>
-    </select>
-    <label>Payload</label>
-    <textarea id="modal_Payload" style="min-height: 100px;"></textarea>
+    <select id="modal_Flag"><option value="">Nenhuma</option><option value="claro">claro</option><option value="vivo">vivo</option><option value="tim">tim</option></select>
+    <label>Payload</label><textarea id="modal_Payload" style="min-height:100px;"></textarea>
     <label>SNI</label><input type="text" id="modal_SNI">
     <label>TlsIP</label><input type="text" id="modal_TlsIP">
     <label>ProxyIP</label><input type="text" id="modal_ProxyIP">
     <label>ProxyPort</label><input type="text" id="modal_ProxyPort">
     <label>Info (tipo)</label>
-    <select id="modal_Info">
-      <option value="Tlsws">Tlsws</option>
-      <option value="Proxy">Proxy</option>
-      <option value="Slowdns">Slowdns</option>
-      <option value="Direct">Direct</option>
-      <option value="Ssl">Ssl</option>
-      <option value="V2ray">V2ray</option>
-    </select>
+    <select id="modal_Info"><option value="Tlsws">Tlsws</option><option value="Proxy">Proxy</option><option value="Slowdns">Slowdns</option><option value="Direct">Direct</option><option value="Ssl">Ssl</option><option value="V2ray">V2ray</option></select>
     <div id="areaSlow" style="margin-top:8px;">
       <label>SlowChave</label><input type="text" id="modal_SlowChave">
       <label>SlowNameServer</label><input type="text" id="modal_SlowNs">
       <label>SlowDns</label><input type="text" id="modal_SlowDns">
     </div>
-    
-    <div style="display:flex; gap:10px; margin-top:15px;">
-      <button style="flex:1; padding:10px; border:none; border-radius:8px; background:#e5e7eb; cursor:pointer;" onclick="fecharModal()">Cancelar</button>
-      <button style="flex:1; padding:10px; border:none; border-radius:8px; background:#16a34a; color:white; cursor:pointer;" onclick="salvarModal()">Salvar</button>
+    <div class="modal-rodape">
+      <button class="btn-neutro" onclick="fecharModal('modalRede')">Cancelar</button>
+      <button class="btn-sucesso" style="color:white;" onclick="salvarModalRede()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL — SERVIDOR -->
+<div id="modalServidor" class="modal-fundo">
+  <div class="modal-caixa">
+    <h3 id="tituloModalServidor">Adicionar Servidor</h3>
+    <label>Name</label><input type="text" id="modal_Srv_Name">
+    <label>TYPE</label>
+    <select id="modal_Srv_Type"><option value="free">free</option><option value="premium">premium</option></select>
+    <label>FLAG</label><input type="text" id="modal_Srv_Flag">
+    <label>ServerIP</label><input type="text" id="modal_Srv_IP">
+    <label>CheckUser</label><input type="text" id="modal_Srv_CheckUser">
+    <label>ServerPort</label><input type="text" id="modal_Srv_Port">
+    <label>SSLPort</label><input type="text" id="modal_Srv_SSLPort">
+    <label>USER</label><input type="text" id="modal_Srv_User">
+    <label>PASS</label><input type="text" id="modal_Srv_Pass">
+    <div class="modal-rodape">
+      <button class="btn-neutro" onclick="fecharModal('modalServidor')">Cancelar</button>
+      <button class="btn-sucesso" style="color:white;" onclick="salvarModalServidor()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL — UDP -->
+<div id="modalUdp" class="modal-fundo">
+  <div class="modal-caixa">
+    <h3 id="tituloModalUdp">Adicionar Porta UDP</h3>
+    <label>Porta</label><input type="text" id="modal_Udp_Porta" inputmode="numeric">
+    <div class="modal-rodape">
+      <button class="btn-neutro" onclick="fecharModal('modalUdp')">Cancelar</button>
+      <button class="btn-sucesso" style="color:white;" onclick="salvarModalUdp()">Salvar</button>
     </div>
   </div>
 </div>
 
 <script>
 let dados = null;
-let indiceEdicao = -1;
+let idxRede = -1;
+let idxServidor = -1;
+let idxUdp = -1;
 
-// =========================================
-// Carregar JSON da entrada
-// =========================================
+// ---------- Carregar ----------
 function carregarJSON() {
   const texto = document.getElementById('entradaJSON').value.trim();
   if (!texto) { alert('⚠️ Cole um JSON primeiro!'); return; }
-  
   try {
     dados = JSON.parse(texto);
+    if (!Array.isArray(dados.Servers)) dados.Servers = dados.Servers ? [dados.Servers] : [];
+    if (!Array.isArray(dados.Networks)) dados.Networks = dados.Networks ? [dados.Networks] : [];
+    if (!Array.isArray(dados.Udp)) dados.Udp = dados.Udp ? [dados.Udp] : [];
     preencherCampos();
     mostrarTela('edicao');
   } catch (erro) {
@@ -226,11 +285,8 @@ function carregarJSON() {
   }
 }
 
-// =========================================
-// Preencher todos os campos com os dados
-// =========================================
 function preencherCampos() {
-  // Campos principais
+  document.getElementById('versaoTopo').textContent = 'VERSÃO ' + (dados.Version ?? '—');
   setVal('edt_Version', dados.Version);
   setVal('edt_PainelConecta5G', dados.PainelConecta5G);
   setVal('edt_ReleaseNotes', dados.ReleaseNotes);
@@ -246,8 +302,7 @@ function preencherCampos() {
   setVal('edt_ModderLinkWhatsapp', dados.ModderLinkWhatsapp);
   setVal('edt_ModderLinkTelegram', dados.ModderLinkTelegram);
   setVal('edt_CheckUser', dados.CheckUser);
-  
-  // Cores
+
   setVal('edt_ModderCorCaixaServ', dados.ModderCorCaixaServ);
   setVal('edt_ModderCorCaixaPay', dados.ModderCorCaixaPay);
   setVal('edt_ModderCorCaixaCentral', dados.ModderCorCaixaCentral);
@@ -259,56 +314,69 @@ function preencherCampos() {
   setVal('edt_ModderCorBotaoIniciar', dados.ModderCorBotaoIniciar);
   setVal('edt_ModderCorBotaoLog', dados.ModderCorBotaoLog);
   setVal('edt_ModderCorBotaoConfig', dados.ModderCorBotaoConfig);
-  
-  // DNS
+
   setVal('edt_DnsPrimario', dados.DnsPrimario);
   setVal('edt_DnsSecundario', dados.DnsSecundario);
-  setVal('edt_UdpPorta', dados.Udp?.[0]?.Porta || '');
-  
-  // Servidor
-  const srv = dados.Servers?.[0] || {};
-  setVal('edt_ServerName', srv.Name);
-  setVal('edt_ServerType', srv.TYPE);
-  setVal('edt_ServerFlag', srv.FLAG);
-  setVal('edt_ServerIP', srv.ServerIP);
-  setVal('edt_ServerCheckUser', srv.CheckUser);
-  setVal('edt_ServerPort', srv.ServerPort);
-  setVal('edt_ServerSSLPort', srv.SSLPort);
-  setVal('edt_ServerUSER', srv.USER);
-  setVal('edt_ServerPASS', srv.PASS);
-  
-  // Redes
+
+  renderizarUdp();
+  renderizarServidores();
   renderizarRedes();
 }
 
-// =========================================
-// Renderizar lista de redes
-// =========================================
+// ---------- Listas (Udp / Servidores / Redes) ----------
+function renderizarUdp() {
+  const lista = document.getElementById('listaUdp');
+  lista.innerHTML = '';
+  if (!dados.Udp.length) { lista.innerHTML = '<div class="vazio">Nenhuma porta UDP cadastrada</div>'; return; }
+  dados.Udp.forEach((u, idx) => {
+    const div = document.createElement('div');
+    div.className = 'item-lista';
+    div.innerHTML = `
+      <span class="nome">Porta ${u.Porta ?? ''}</span>
+      <div class="acoes">
+        <button class="acao-editar" onclick="editarUdp(${idx})">✏️ Editar</button>
+        <button class="acao-excluir" onclick="excluirUdp(${idx})">🗑️ Excluir</button>
+      </div>`;
+    lista.appendChild(div);
+  });
+}
+function renderizarServidores() {
+  const lista = document.getElementById('listaServidores');
+  lista.innerHTML = '';
+  if (!dados.Servers.length) { lista.innerHTML = '<div class="vazio">Nenhum servidor cadastrado</div>'; return; }
+  dados.Servers.forEach((s, idx) => {
+    const div = document.createElement('div');
+    div.className = 'item-lista';
+    div.innerHTML = `
+      <span class="nome">${s.Name || '(sem nome)'}</span>
+      <span class="sub">${s.ServerIP || ''} · ${s.TYPE || ''}</span>
+      <div class="acoes">
+        <button class="acao-editar" onclick="editarServidor(${idx})">✏️ Editar</button>
+        <button class="acao-excluir" onclick="excluirServidor(${idx})">🗑️ Excluir</button>
+      </div>`;
+    lista.appendChild(div);
+  });
+}
 function renderizarRedes() {
   const lista = document.getElementById('listaRedes');
   lista.innerHTML = '';
-  if (!dados.Networks) return;
-  
+  if (!dados.Networks.length) { lista.innerHTML = '<div class="vazio">Nenhuma rede cadastrada</div>'; return; }
   dados.Networks.forEach((rede, idx) => {
     const div = document.createElement('div');
-    div.className = 'item-rede';
+    div.className = 'item-lista';
     div.innerHTML = `
-      <strong>${rede.Name || '(sem nome)'}</strong>
-      <small style="display:block; color:#666;">${rede.FLAG || ''} · ${rede.Info || ''}</small>
+      <span class="nome">${rede.Name || '(sem nome)'}</span>
+      <span class="sub">${rede.FLAG || ''} · ${rede.Info || ''}</span>
       <div class="acoes">
-        <button style="background:#e0e7ff; color:#3730a3;" onclick="editarRede(${idx})">✏️ Editar</button>
-        <button style="background:#fee2e2; color:#dc2626;" onclick="excluirRede(${idx})">🗑️ Excluir</button>
-      </div>
-    `;
+        <button class="acao-editar" onclick="editarRede(${idx})">✏️ Editar</button>
+        <button class="acao-excluir" onclick="excluirRede(${idx})">🗑️ Excluir</button>
+      </div>`;
     lista.appendChild(div);
   });
 }
 
-// =========================================
-// Gerar JSON final
-// =========================================
+// ---------- Gerar JSON final ----------
 function gerarJSON() {
-  // Atualizar todos os campos de volta no objeto
   dados.Version = numVal('edt_Version');
   dados.PainelConecta5G = val('edt_PainelConecta5G');
   dados.ReleaseNotes = val('edt_ReleaseNotes');
@@ -324,8 +392,7 @@ function gerarJSON() {
   dados.ModderLinkWhatsapp = val('edt_ModderLinkWhatsapp');
   dados.ModderLinkTelegram = val('edt_ModderLinkTelegram');
   dados.CheckUser = val('edt_CheckUser');
-  
-  // Cores — converter string vazia em false
+
   dados.ModderCorCaixaServ = corVal('edt_ModderCorCaixaServ');
   dados.ModderCorCaixaPay = corVal('edt_ModderCorCaixaPay');
   dados.ModderCorCaixaCentral = corVal('edt_ModderCorCaixaCentral');
@@ -337,45 +404,28 @@ function gerarJSON() {
   dados.ModderCorBotaoIniciar = corVal('edt_ModderCorBotaoIniciar');
   dados.ModderCorBotaoLog = corVal('edt_ModderCorBotaoLog');
   dados.ModderCorBotaoConfig = corVal('edt_ModderCorBotaoConfig');
-  
-  // DNS
+
   dados.DnsPrimario = val('edt_DnsPrimario');
   dados.DnsSecundario = val('edt_DnsSecundario');
-  dados.Udp = [{ Porta: val('edt_UdpPorta') }];
-  
-  // Servidor
-  dados.Servers = [{
-    Name: val('edt_ServerName'),
-    TYPE: val('edt_ServerType'),
-    FLAG: val('edt_ServerFlag'),
-    ServerIP: val('edt_ServerIP'),
-    CheckUser: val('edt_ServerCheckUser'),
-    ServerPort: val('edt_ServerPort'),
-    SSLPort: val('edt_ServerSSLPort'),
-    USER: val('edt_ServerUSER'),
-    PASS: val('edt_ServerPASS')
-  }];
-  
-  // Exibir resultado
+  // Servers, Udp e Networks já ficam atualizados nos próprios arrays (dados.Servers / dados.Udp / dados.Networks)
+
   document.getElementById('saidaJSON').value = JSON.stringify(dados, null, 4);
   mostrarTela('resultado');
 }
 
-// =========================================
-// Funções auxiliares
-// =========================================
+// ---------- Auxiliares ----------
 function val(id) { return document.getElementById(id)?.value || ''; }
 function numVal(id) { return Number(document.getElementById(id)?.value) || 0; }
+function talvezNumero(v) {
+  if (v === '' || v === null || v === undefined) return v;
+  return isNaN(Number(v)) ? v : Number(v);
+}
 function setVal(id, v) {
   const el = document.getElementById(id);
   if (!el) return;
-  if (v === null || v === undefined) el.value = '';
-  else el.value = v;
+  el.value = (v === null || v === undefined) ? '' : v;
 }
-function corVal(id) {
-  const v = val(id);
-  return v === '' ? false : v;
-}
+function corVal(id) { const v = val(id); return v === '' ? false : v; }
 
 function mostrarTela(nome) {
   document.getElementById('tela-colar').classList.toggle('oculto', nome !== 'colar');
@@ -390,82 +440,108 @@ function voltarInicio() {
   mostrarTela('colar');
 }
 function copiarSaida() {
-  document.getElementById('saidaJSON').select();
-  document.execCommand('copy');
-  alert('✅ Copiado! Agora cole no seu app!');
+  const campo = document.getElementById('saidaJSON');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(campo.value).then(
+      () => alert('✅ Copiado! Agora cole no seu app!'),
+      () => { campo.select(); document.execCommand('copy'); alert('✅ Copiado!'); }
+    );
+  } else {
+    campo.select();
+    document.execCommand('copy');
+    alert('✅ Copiado!');
+  }
 }
+function fecharModal(id) { document.getElementById(id).style.display = 'none'; }
 
-// =========================================
-// Modal de Redes
-// =========================================
+// ---------- Modal: Redes ----------
 function adicionarRede() {
-  indiceEdicao = -1;
+  idxRede = -1;
   document.getElementById('tituloModalRede').textContent = 'Adicionar Rede';
-  limparModal();
+  limparModalRede();
   document.getElementById('modalRede').style.display = 'block';
 }
 function editarRede(idx) {
-  indiceEdicao = idx;
+  idxRede = idx;
   const r = dados.Networks[idx];
   document.getElementById('tituloModalRede').textContent = 'Editar Rede';
-  document.getElementById('modal_Nome').value = r.Name || '';
-  document.getElementById('modal_Flag').value = r.FLAG || '';
-  document.getElementById('modal_Payload').value = r.Payload || '';
-  document.getElementById('modal_SNI').value = r.SNI || '';
-  document.getElementById('modal_TlsIP').value = r.TlsIP || '';
-  document.getElementById('modal_ProxyIP').value = r.ProxyIP || '';
-  document.getElementById('modal_ProxyPort').value = r.ProxyPort || '';
-  document.getElementById('modal_Info').value = r.Info || '';
-  document.getElementById('modal_SlowChave').value = r.SlowChave || '';
-  document.getElementById('modal_SlowNs').value = r.SlowNameServer || '';
-  document.getElementById('modal_SlowDns').value = r.SlowDns || '';
+  setVal('modal_Nome', r.Name); setVal('modal_Flag', r.FLAG || '');
+  setVal('modal_Payload', r.Payload); setVal('modal_SNI', r.SNI);
+  setVal('modal_TlsIP', r.TlsIP); setVal('modal_ProxyIP', r.ProxyIP);
+  setVal('modal_ProxyPort', r.ProxyPort); setVal('modal_Info', r.Info || 'Tlsws');
+  setVal('modal_SlowChave', r.SlowChave); setVal('modal_SlowNs', r.SlowNameServer); setVal('modal_SlowDns', r.SlowDns);
   document.getElementById('modalRede').style.display = 'block';
 }
 function excluirRede(idx) {
-  if (confirm('Excluir essa rede?')) {
-    dados.Networks.splice(idx, 1);
-    renderizarRedes();
-  }
+  if (confirm('Excluir essa rede?')) { dados.Networks.splice(idx, 1); renderizarRedes(); }
 }
-function fecharModal() {
-  document.getElementById('modalRede').style.display = 'none';
-  indiceEdicao = -1;
+function limparModalRede() {
+  ['modal_Nome','modal_Flag','modal_Payload','modal_SNI','modal_TlsIP','modal_ProxyIP','modal_ProxyPort','modal_SlowChave','modal_SlowNs','modal_SlowDns'].forEach(id => setVal(id, ''));
+  setVal('modal_Info', 'Tlsws');
 }
-function limparModal() {
-  document.getElementById('modal_Nome').value = '';
-  document.getElementById('modal_Flag').value = '';
-  document.getElementById('modal_Payload').value = '';
-  document.getElementById('modal_SNI').value = '';
-  document.getElementById('modal_TlsIP').value = '';
-  document.getElementById('modal_ProxyIP').value = '';
-  document.getElementById('modal_ProxyPort').value = '';
-  document.getElementById('modal_Info').value = 'Tlsws';
-  document.getElementById('modal_SlowChave').value = '';
-  document.getElementById('modal_SlowNs').value = '';
-  document.getElementById('modal_SlowDns').value = '';
-}
-function salvarModal() {
+function salvarModalRede() {
   const rede = {
-    Name: document.getElementById('modal_Nome').value,
-    FLAG: document.getElementById('modal_Flag').value,
-    Payload: document.getElementById('modal_Payload').value,
-    SNI: document.getElementById('modal_SNI').value,
-    TlsIP: document.getElementById('modal_TlsIP').value,
-    ProxyIP: document.getElementById('modal_ProxyIP').value,
-    ProxyPort: document.getElementById('modal_ProxyPort').value,
-    Info: document.getElementById('modal_Info').value,
-    SlowChave: document.getElementById('modal_SlowChave').value,
-    SlowNameServer: document.getElementById('modal_SlowNs').value,
-    SlowDns: document.getElementById('modal_SlowDns').value
+    Name: val('modal_Nome'), FLAG: val('modal_Flag'), Payload: val('modal_Payload'),
+    SNI: val('modal_SNI'), TlsIP: val('modal_TlsIP'), ProxyIP: val('modal_ProxyIP'),
+    ProxyPort: talvezNumero(val('modal_ProxyPort')), Info: val('modal_Info'),
+    SlowChave: val('modal_SlowChave'), SlowNameServer: val('modal_SlowNs'), SlowDns: val('modal_SlowDns')
   };
-  if (!dados.Networks) dados.Networks = [];
-  if (indiceEdicao === -1) {
-    dados.Networks.push(rede);
-  } else {
-    dados.Networks[indiceEdicao] = rede;
-  }
-  fecharModal();
-  renderizarRedes();
+  if (idxRede === -1) dados.Networks.push(rede); else dados.Networks[idxRede] = rede;
+  fecharModal('modalRede'); renderizarRedes();
+}
+
+// ---------- Modal: Servidores ----------
+function adicionarServidor() {
+  idxServidor = -1;
+  document.getElementById('tituloModalServidor').textContent = 'Adicionar Servidor';
+  ['modal_Srv_Name','modal_Srv_Flag','modal_Srv_IP','modal_Srv_CheckUser','modal_Srv_Port','modal_Srv_SSLPort','modal_Srv_User','modal_Srv_Pass'].forEach(id => setVal(id, ''));
+  setVal('modal_Srv_Type', 'free');
+  document.getElementById('modalServidor').style.display = 'block';
+}
+function editarServidor(idx) {
+  idxServidor = idx;
+  const s = dados.Servers[idx];
+  document.getElementById('tituloModalServidor').textContent = 'Editar Servidor';
+  setVal('modal_Srv_Name', s.Name); setVal('modal_Srv_Type', s.TYPE || 'free');
+  setVal('modal_Srv_Flag', s.FLAG); setVal('modal_Srv_IP', s.ServerIP);
+  setVal('modal_Srv_CheckUser', s.CheckUser); setVal('modal_Srv_Port', s.ServerPort);
+  setVal('modal_Srv_SSLPort', s.SSLPort); setVal('modal_Srv_User', s.USER); setVal('modal_Srv_Pass', s.PASS);
+  document.getElementById('modalServidor').style.display = 'block';
+}
+function excluirServidor(idx) {
+  if (confirm('Excluir esse servidor?')) { dados.Servers.splice(idx, 1); renderizarServidores(); }
+}
+function salvarModalServidor() {
+  const srv = {
+    Name: val('modal_Srv_Name'), TYPE: val('modal_Srv_Type'), FLAG: val('modal_Srv_Flag'),
+    ServerIP: val('modal_Srv_IP'), CheckUser: val('modal_Srv_CheckUser'),
+    ServerPort: talvezNumero(val('modal_Srv_Port')), SSLPort: talvezNumero(val('modal_Srv_SSLPort')),
+    USER: val('modal_Srv_User'), PASS: val('modal_Srv_Pass')
+  };
+  if (idxServidor === -1) dados.Servers.push(srv); else dados.Servers[idxServidor] = srv;
+  fecharModal('modalServidor'); renderizarServidores();
+}
+
+// ---------- Modal: UDP ----------
+function adicionarUdp() {
+  idxUdp = -1;
+  document.getElementById('tituloModalUdp').textContent = 'Adicionar Porta UDP';
+  setVal('modal_Udp_Porta', '');
+  document.getElementById('modalUdp').style.display = 'block';
+}
+function editarUdp(idx) {
+  idxUdp = idx;
+  document.getElementById('tituloModalUdp').textContent = 'Editar Porta UDP';
+  setVal('modal_Udp_Porta', dados.Udp[idx].Porta);
+  document.getElementById('modalUdp').style.display = 'block';
+}
+function excluirUdp(idx) {
+  if (confirm('Excluir essa porta?')) { dados.Udp.splice(idx, 1); renderizarUdp(); }
+}
+function salvarModalUdp() {
+  const item = { Porta: talvezNumero(val('modal_Udp_Porta')) };
+  if (idxUdp === -1) dados.Udp.push(item); else dados.Udp[idxUdp] = item;
+  fecharModal('modalUdp'); renderizarUdp();
 }
 </script>
 </body>
