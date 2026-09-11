@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Editor de Config — DROPNET 5G</title>
+<title>Painel DROPNET 5G</title>
 <style>
 :root {
   --bg-fora: #c7c4ec;
@@ -118,14 +118,43 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--r
 .modal-caixa h3 { margin-top: 0; }
 .modal-rodape { display: flex; gap: 10px; margin-top: 16px; }
 .modal-rodape button { flex: 1; padding: 12px; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; }
+
+/* ---------- Tela de Login (inicial, ilustração) ---------- */
+#tela-login { display: flex; align-items: center; justify-content: center; min-height: 80vh; }
+#tela-login .card { text-align: center; width: 100%; }
+.logo-titulo {
+  font-size: 34px; font-weight: 900; line-height: 1.1;
+  background: linear-gradient(135deg, var(--roxo-escuro), var(--azul));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  letter-spacing: 0.5px; font-style: italic;
+}
+.dias-online { margin-top: 18px; font-size: 13px; font-weight: 600; color: var(--texto-claro); }
+.btn-entrar {
+  width: 100%; border: none; border-radius: 20px; padding: 14px;
+  font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 20px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  letter-spacing: 1px; color: white;
+  background: linear-gradient(135deg, var(--roxo-escuro), var(--azul));
+  box-shadow: 0 6px 16px rgba(28, 28, 224, 0.3);
+}
 </style>
 </head>
 <body>
 
 <div class="container">
 
+  <!-- TELA 0 — LOGIN (ILUSTRAÇÃO, sem usuário/senha) -->
+  <div id="tela-login">
+    <div class="card">
+      <div class="logo-titulo">DROPNET<br>5G</div>
+      <span class="pilula">CONHECER DROPNET 5G</span>
+      <div class="dias-online" id="diasOnline">Site Online: — dias</div>
+      <button class="btn-entrar" onclick="entrarNoPainel()">➡️ Entrar</button>
+    </div>
+  </div>
+
   <!-- TELA 1 — COLAR O JSON -->
-  <div class="card" id="tela-colar">
+  <div class="card oculto" id="tela-colar">
     <div class="topo">
       <h1>EDITOR<br>CONFIG DROPNET 5G</h1>
       <span class="pilula">COLE · EDITE · GERE</span>
@@ -284,6 +313,18 @@ let idxRede = -1;
 let idxServidor = -1;
 let idxUdp = -1;
 
+// ---------- Login (ilustração) ----------
+function entrarNoPainel() {
+  document.getElementById('tela-login').classList.add('oculto');
+  document.getElementById('tela-colar').classList.remove('oculto');
+}
+(function calcularDiasOnline() {
+  const inicio = new Date('2023-01-01'); // troque pela data real de lançamento do seu painel
+  const hoje = new Date();
+  const dias = Math.floor((hoje - inicio) / (1000 * 60 * 60 * 24));
+  document.getElementById('diasOnline').textContent = `Site Online: ${dias} dias`;
+})();
+
 // ---------- Carregar ----------
 function carregarJSON() {
   const texto = document.getElementById('entradaJSON').value.trim();
@@ -339,7 +380,6 @@ function preencherCampos() {
 }
 
 // ---------- Reordenação (genérica) ----------
-// Move o item da posição idx para idx-1 (subir) ou idx+1 (descer)
 function moverItemArray(array, idx, direcao) {
   const novoIdx = idx + direcao;
   if (novoIdx < 0 || novoIdx >= array.length) return;
