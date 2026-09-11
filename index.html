@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PAINEL CONECTA 5G — DROPNET</title>
+<style>
+:root {
+  --fundo-pagina: #c4c4e0;
+  --fundo-card: #e6e6fa;
+  --texto-escuro: #1a1a2e;
+  --azul-salvar: #1d4ed8;
+  --verde-ligado: #22c55e;
+  --cinza-desligado: #d1d5db;
+  --borda-campo: #b4b8d0;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+body { background: var(--fundo-pagina); min-height: 100vh; padding: 16px; }
+
+.container { max-width: 420px; margin: 0 auto; }
+.card {
+  background: var(--fundo-card);
+  border-radius: 20px;
+  padding: 20px 18px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  margin-bottom: 14px;
+}
+
+.titulo-secao {
+  font-size: 16px; font-weight: 700; margin-bottom: 14px;
+  padding-bottom: 6px; border-bottom: 1px solid #ccc;
+  display: flex; align-items: center; gap: 6px;
+}
+.titulo-secao span { font-size: 18px; }
+
+.linha-cor {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0;
+}
+.nome-opcao { font-size: 14px; color: #333; }
+
+.switch {
+  width: 50px; height: 28px; background: var(--cinza-desligado);
+  border-radius: 28px; position: relative; cursor: pointer;
+  transition: all 0.25s ease; border: none;
+}
+.switch.ativo { background: var(--verde-ligado); }
+.switch::after {
+  content: ''; position: absolute; width: 24px; height: 24px;
+  background: white; border-radius: 50%; top: 2px; left: 2px;
+  transition: all 0.25s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+.switch.ativo::after { transform: translateX(22px); }
+
+.campo-cor {
+  width: 100%; padding: 10px 12px; margin: 0 0 8px 0;
+  border: 1px solid var(--borda-campo); border-radius: 8px;
+  font-size: 14px; background: white; display: none;
+}
+.campo-cor.mostra { display: block; }
+
+label {
+  display: block; font-size: 13px; font-weight: 500; margin: 12px 0 4px; color: #444;
+}
+input, select, textarea {
+  width: 100%; padding: 10px 12px; border: 1px solid var(--borda-campo);
+  border-radius: 8px; font-size: 14px; background: white;
+}
+textarea { min-height: 80px; resize: vertical; }
+
+.btn {
+  border: none; border-radius: 10px; padding: 10px 12px;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+}
+.btn-roxo { background: #8375eb; color: white; }
+.btn-salvar {
+  width: 100%; background: var(--azul-salvar); color: white; border: none;
+  border-radius: 12px; padding: 14px; font-size: 16px; font-weight: 700;
+  margin: 16px 0; cursor: pointer;
+}
+.voltar {
+  display: block; text-align: center; color: var(--azul-salvar);
+  text-decoration: none; font-weight: 600; margin-top: 6px; font-size: 14px;
+}
+
+.tela { display: none; }
+.tela.ativa { display: block; }
+.bemvindo { font-size: 17px; font-weight: 700; text-align: center; margin-bottom: 4px; }
+.versao { font-size: 14px; font-weight: 600; text-align: center; margin-bottom: 16px; }
+.grid-botoes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+
+.fundo-modal {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+  align-items: center; justify-content: center; padding: 16px; z-index: 100;
+}
+.fundo-modal.aberto { display: flex; }
+.modal {
+  background: var(--fundo-card); border-radius: 16px; width: 100%; max-width: 400px;
+  padding: 20px; max-height: 90vh; overflow-y: auto;
+}
+.modal-cabecalho {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 16px;
+}
+.fechar { border: none; background: none; font-size: 20px; cursor: pointer; color: #666; }
+.area-botoes { display: flex; gap: 10px; margin-top: 16px; }
+.btn-green { background: #16a34a; color: white; flex: 1; }
+.btn-orange { background: #e69835; color: white; flex: 1; }
+
+.item-rede {
+  padding: 12px; background: white; border-radius: 10px; margin-bottom: 8px;
+  border-left: 3px solid #8375eb; cursor: pointer;
+}
+.item-rede:hover { background: #f8f9fa; }
+.item-rede strong { display: block; font-size: 14px; margin-bottom: 2px; }
+.item-rede small { font-size: 12px; color: #666; }
+
+.pre-json {
+  background: #1e293b; color: #94e2d5; padding: 14px; border-radius: 10px;
+  font-family: monospace; font-size: 10px; white-space: pre-wrap; word-break: break-all;
+  max-height: 400px; overflow-y: auto; margin-top: 10px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="tela ativa" id="tela-inicio">
+    <div class="card">
+      <p class="bemvindo">Bem-vindo(a) DROPNET!</p>
+      <p class="versao">Versão: <strong id="mostraVersao">20</strong></p>
+      <div class="grid-botoes">
+        <button class="btn btn-roxo" onclick="mostrarAba('links')">🔗 Links</button>
+        <button class="btn btn-roxo" onclick="mostrarAba('cores')">🎨 Cores</button>
+        <button class="btn btn-roxo" onclick="mostrarAba('dns')">🌐 DNS/UDP</button>
+        <button class="btn btn-roxo" onclick="mostrarAba('servidor')">🖥️ Servidor</button>
+        <button class="btn btn-roxo" onclick="mostrarAba('redes')">📋 Redes</button>
+        <button class="btn btn-roxo" onclick="mostrarAba('json')">📄 JSON</button>
+      </div>
+    </div>
+
+    <!-- LINKS -->
+    <div class="card" id="aba-links" style="display:none;">
+      <h3 class="titulo-secao"><span>🔗</span> Links & Imagens</h3>
+      <label>Sms</label><input type="text" id="Sms">
+      <label>Logo Online</label><input type="text" id="logoonline">
+      <label>Fundo Online</label><input type="text" id="fundoonline">
+      <label>Banner Rodapé</label><input type="text" id="banneRodapeOnline">
+      <label>Fundo da Logo</label><input type="text" id="fundoDoLogOnline">
+      <label>E-mail / Feedback</label><input type="text" id="EmailFeedback">
+      <label>URL Contato</label><input type="text" id="UrlContato">
+      <label>URL Termos de Uso</label><input type="text" id="UrlTermos">
+      <label>Link WhatsApp</label><input type="text" id="ModderLinkWhatsapp">
+      <label>Link Telegram</label><input type="text" id="ModderLinkTelegram">
+    </div>
+
+    <!-- CORES -->
+    <div class="card" id="aba-cores" style="display:none;">
+      <h3 class="titulo-secao"><span>🎨</span> Cores — Caixas</h3>
+      
+      <div class="linha-cor">
+        <span class="nome-opcao">Caixa Servidor</span>
+        <button class="switch" id="ModderCorCaixaServ" onclick="trocarSwitch(this)"></button>
+      </div>
+      <input type="text" class="campo-cor" id="corServidor" placeholder="#cor">
+
+      <div class="linha-cor">
+        <span class="nome-opcao">Caixa Payload</span>
+        <button class="switch" id="ModderCorCaixaPay" onclick="trocarSwitch(this)"></button>
+      </div>
+      <input type="text" class="campo-cor" id="corPayload" placeholder="#cor">
+
+      <div class="linha-cor">
+        <span class="nome-opcao">Caixa Central</span>
+        <button class="switch" id="ModderCorCaixaCentral" onclick="trocarSwitch(this)"></button>
+      </div>
+      <input type="text" class="campo-cor" id="corCentral" placeholder="#cor">
+
+      <div class="linha-cor">
+        <span class="nome-opcao">Caixa Conexão</span>
+        <button class="switch ativo" id="ModderCorCaixaConexao" onclick="trocarSwitch(this)"></button>
+      </div>
+      <input type="text" class="campo-cor mostra" id="corConexao" value="#2563eb">
+
+      <div class="linha-cor">
+        <span class="nome-opcao">Caixa Registro</span>
+        <button class="switch" id="ModderCorCaixaRegistro" onclick="trocarSwitch(this)"></button>
+      </div>
+      <input type="text" class="campo-cor" id="corRegistro" placeholder="#cor">
+
+      <div class="linha-cor">
+        <span class="nome-opcao">Caixa Ferramentas</span>
+        <button class="switch" id="ModderCorCaixaFerramentas" onclick="trocarSwitch(this)"></button>
+      </div>
+      <input type="text" class="campo-cor" id="corFerramentas" placeholder="#cor">
+
+      <div class="linha-cor">
+        <span class="nome-opcao">Caixa Usuário</span>
+        <button class="switch" id="ModderCorCaixaUsuario" onclick="trocarSwitch(this)"></button>
+      </div>
+      <input type="text" class="campo-cor" id="corUsuario" placeholder="#cor">
+
+      <div class="linha-cor">
+        <span class="nome-opcao">Caixa Senha</span>
+        <button class="switch" id="ModderCorCaixaSenha" onclick="trocarSwitch(this)"></button>
+      </div>
+      <input type="text" class="campo-cor" id="corSenha" placeholder="#cor">
+
+      <h3 class="titulo-secao" style="margin-top:20px;"><span>🔵</span> Cores — Botões</h3>
+      
+      <div class="linha-cor">
+        <span class="nome-opcao">Botão Iniciar</span>
+        <button class="switch ativo" id="ModderCorBotaoIniciar" onclick="trocarSwitch(this)"></button>
+      </div>
+      <input type="text" class="campo-cor mostra" id="corBotaoIniciar" value="#2563eb">
+
+      <div class="linha-cor">
+        <span class="nome-opcao">Botão Login</span>
+        <button class="switch" id="ModderCorBotaoLog" onclick="trocarSwitch(this)"></button>
+      </div>
+      <input type="text" class="campo-cor" id="corBotaoLogin" placeholder="#cor">
+
+      <div class="linha-cor">
+        <span class="nome-opcao">Botão Config</span>
+        <button class="switch" id="ModderCorBotaoConfig" onclick="trocarSwitch(this)"></button>
+      </div>
+      <input type="text" class="campo-cor" id="corBotaoConfig" placeholder="#cor">
+    </div>
+
+    <!-- DNS & UDP -->
+    <div class="card" id="aba-dns" style="display:none;">
+      <h3 class="titulo-secao"><span>🌐</span> DNS & UDP</h3>
+      <label>DNS Primário</label>
+      <input type="text" id="DnsPrimario" value="1.1.1.1">
+      <label>DNS Secundário</label>
+      <input type="text" id="DnsSecundario" value="8.8.8.8">
+      <label>Porta UDP</label>
+      <input type="text" id="UdpPorta" value="7300">
+      <div class="linha-cor" style="margin-top:10px;">
+        <span class="nome-opcao">Verificar Usuário</span>
+        <button class="switch" id="CheckUser" onclick="trocarSwitch(this)"></button>
+      </div>
+    </div>
+
+    <!-- SERVIDOR -->
+    <div class="card" id="aba-servidor" style="display:none;">
+      <h3 class="titulo-secao"><span>🖥️</span> Servidor Principal</h3>
+      <label>Nome</label><input type="text" id="ServerName" value="DROPNET">
+      <label>Tipo</label>
+      <select id="ServerType">
+        <option value="free" selected>free</option>
+        <option value="premium">premium</option>
+      </select>
+      <label>FLAG</label><input type="text" id="ServerFlag" value="br.png">
+      <label>ServerIP</label><input type="text" id="ServerIP" value="64.181.183.170">
+      <label>CheckUser</label><input type="text" id="ServerCheckUser" value="http://">
+      <label>ServerPort</label><input type="text" id="ServerPort" value="80">
+      <label>SSLPort</label><input type="text" id="ServerSSLPort" value="443">
+      <label>Usuário</label><input type="text" id="ServerUSER" value="">
+      <label>Senha</label><input type="text" id="ServerPASS" value="">
+    </div>
+
+    <!-- REDES / PAYLOADS -->
+    <div class="card" id="aba-redes" style="display:none;">
+      <h3 class="titulo-secao"><span>📋</span> Redes & Payloads</h3>
+      <button class="btn btn-roxo" style="margin-bottom:12px; width:100%;" onclick="abrirModalRede()">+ Adicionar Rede</button>
+      <div id="listaRedes"></div>
+    </div>
+
+    <!-- JSON FINAL -->
+    <div class="card" id="aba-json" style="display:none;">
+      <h3 class="titulo-secao"><span>📄</span> JSON Gerado</h3>
+      <button class="btn btn-roxo" style="margin-bottom:10px;" onclick="copiarJSON()">📋 Copiar</button>
+      <pre class="pre-json" id="jsonSaida"></pre>
+    </div>
+
+    <button class="btn-salvar" onclick="gerarJSON()">🔒 Gerar JSON Completo</button>
+  </div>
+</div>
+
+<!-- MODAL: EDITAR REDE -->
+<div class="fundo-modal" id="modalRede">
+  <div class="modal">
+    <div class="modal-cabecalho">
+      <h3 id="tituloModalRede">Adicionar Rede</h3>
+      <button class="fechar" onclick="fecharModalRede()">&times;</button>
+    </div>
+
+    <label>Nome</label>
+    <input type="text" id="redeNome">
+
+    <label>FLAG (Operadora)</label>
+    <select id="redeFlag">
+      <option value="">Nenhuma</option>
+      <option value="claro">Claro</option>
+      <option value="vivo">Vivo</option>
+      <option value="tim">TIM</option>
+    </select>
+
+    <label>Info (Tipo)</label>
+    <select id="redeInfo" onchange="mostrarCamposSlow()">
+      <option value="Tlsws">Tlsws</option>
+      <option value="Proxy">Proxy</option>
+      <option value="Slowdns">Slowdns</option>
+      <option value="Direct">Direct</option>
+      <option value="Ssl">Ssl</option>
+      <option value="V2ray">V2ray</option>
+    </select>
+
+    <label>Payload</label>
+    <textarea id="redePayload"></textarea>
+
+    <label>SNI (separar com #)</label>
+    <input type="text" id="redeSNI">
+
+    <label>TlsIP (separar com #)</label>
+    <input type="text" id="redeTlsIP">
+
+    <label>ProxyIP (separar com #)</label>
+    <input type="text" id="redeProxyIP">
+
+    <label>Proxy Port</label>
+    <input type="text" id="redeProxyPort">
+
+    <div id="areaSlowdns" style="display:none; margin-top:10px;">
+      <label>SlowChave</label>
+      <input type="text" id="redeSlowChave">
+      <label>SlowNameServer</label>
+      <input type="text" id="redeSlowNs">
+      <label>SlowDns</label>
+      <input type="text" id="redeSlowDns">
+    </div>
+
+    <div class="area-botoes">
+      <button class="btn btn-orange" onclick="fecharModalRede()">Cancelar</button>
+      <button class="btn btn-green" onclick="salvarRede()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// =============================================
+// DADOS INICIAIS — TUDO CARREGADO
+// =============================================
+let config = {
+  Version: 20,
+  PainelConecta5G: "https://www.dropbox.com/scl/fi/mtcedfq2c4abc6bm0e8it/DROPNET-5G.txt?rlkey=95xz7usmgfhfm21a7ehr1z06m&st=v2xhvop2&dl=1",
+  ReleaseNotes: "BEM-VINDO AO PAINEL CONECTA 5G!",
+  UrlUpdate: "https://www.dropbox.com/scl/fi/mtcedfq2c4abc6bm0e8it/DROPNET-5G.txt?rlkey=95xz7usmgfhfm21a7ehr1z06m&st=v2xhvop2&dl=1",
+  Sms: "",
+  logoonline: "",
+  fundoonline: "",
+  banneRodapeOnline: "",
+  fundoDoLogOnline: "",
+  EmailFeedback: "",
+  UrlContato: "",
+  UrlTermos: "",
+  CheckUser: "false",
+  ModderLinkWhatsapp: "",
+  ModderLinkTelegram: "",
+  ModderCorCaixaServ: false,
+  ModderCorCaixaPay: false,
+  ModderCorCaixaCentral: false,
+  ModderCorCaixaConexao: "#2563eb",
+  ModderCorCaixaRegistro: false,
+  ModderCorCaixaFerramentas: false,
+  ModderCorCaixaUsuario: false,
+  ModderCorCaixaSenha: false,
+  ModderCorBotaoIniciar: "#2563eb",
+  ModderCorBotaoLog: false,
+  ModderCorBotaoConfig: false,
+  DnsPrimario: "1.1.1.1",
+  DnsSecundario: "8.8.8.8",
+  Udp: [{ Porta: "7300" }],
+  Servers: [{
+    Name: "DROPNET", TYPE: "free", FLAG: "br.png",
+    ServerIP: "64.181.183.170", CheckUser: "http://",
+    ServerPort: "80", SSLPort: "443", USER: "", PASS: ""
+  }],
+  Networks: [
+    { Name: "CLARO SLOWDNS 01", FLAG: "claro", Payload: "", SNI: "", TlsIP: "", ProxyIP: "", ProxyPort: "53", SlowChave: "fc4551225bd43eb428d4723877615993e81044683e9abf0cdb33a12de0b42746", SlowNameServer: "ns.dpnet.online", SlowDns: "biel.dpnet.online", Info: "Slowdns" },
+    { Name: "CLARO SLOWDNS 02", FLAG: "claro", Payload: "", SNI: "", TlsIP: "", ProxyIP: "", ProxyPort: "53", SlowChave: "fc4551225bd43eb428d4723877615993e81044683e9abf0cdb33a12de0b42746", SlowNameServer: "ns.dpnet.online", SlowDns: "www.dpnet.online", Info: "Slowdns" },
+    { Name: "CLARO SLOWDNS 03", FLAG: "claro", Payload: "", SNI: "", TlsIP: "", ProxyIP: "", ProxyPort: "53", SlowChave: "fc4551225bd43eb428d4723877615993e81044683e9abf0cdb33a12de0b42746", SlowNameServer: "ns.dpnet.online", SlowDns: "200.169.117.222", Info: "Slowdns" },
+    { Name: "--------------------FIM--------------------", FLAG: "", Payload: "", SNI: "", TlsIP: "", ProxyIP: "", ProxyPort: "", SlowChave: "", SlowNameServer: "", SlowDns: "", Info: "" },
+    { Name: "📱VIVO CLOUDFRONT CDN ", FLAG: "vivo", Payload: "[lf]GET wss://d1lbogp8iknrzi.cloudfront.net/ [split]HTTP/1.1  [lf]Expect:100-continue[lf]Host: d1lbogp8iknrzi.cloudfront.net[lf]Connection: Upgrade[lf]Upgrade: websocket[lf][lf][split]GET/? HTTP/1.1 [lf]Host: [host][lf]Content-Length:9999999999999[lf][lf]@@@[lf]GET / [split][protocol] [crlf]Host: [host][crlf]Connection: upgrade[crlf]User-Agent: [ua][crlf]Upgrade: websocket[crlf][crlf][split][protocol] [crlf]Host: [host][crlf]Content-Length:9999999999999[crlf][crlf]@@@[lf]GET wss://china.dpnet.online/ [split]HTTP/1.1  [lf]Expect:100-continue[lf]Host: [host][lf]Connection: Upgrade[lf]Upgrade: websocket[lf][lf][split]GET/? HTTP/1.1 [lf]Host: china.dpnet.online[lf]Content-Length:9999999999999[lf][lf]#[lf]GET / [split][protocol] [crlf]Host: china.dpnet.online[crlf]Connection: upgrade[crlf]User-Agent: [ua][crlf]Upgrade: websocket[crlf][crlf][split][protocol] [crlf]Host: [host][crlf]Content-Length:9999999999999[crlf][crlf]", SNI: "", TlsIP: "", ProxyIP: "bimi.xe.com#status.xe.com#incidents.xe.com#links.xe.com#tmi-production.xe.com#dev-helpdesk.xe.com#www.xe.com#helpdesk.xe.com#enetemean1.xe.com#hr-helpdesk.xe.com#insights.xe.com#launchpad-cache.xe.com#realm-a.x.com#policies.xe.com#account.xe.com#money.x.com#corporate-registration.xe.com#app.xe.com#personal-registration.xe.com#money-dev.x.com#money-staging.x.com#realm-b.x.com", ProxyPort: "80", SlowChave: "", SlowNameServer: "", SlowDns: "", Info: "Proxy" },
+    { Name: "📱VIVO CLOUDFLARE CDN ", FLAG: "vivo", Payload: "[lf]GET wss://biel.dpnet.online/ [split]HTTP/1.1  [lf]Expect:100-continue[lf]Host: biel.dpnet.online[lf]Connection: Upgrade[lf]Upgrade: websocket[lf][lf][split]GET/? HTTP/1.1 [lf]Host: [host][lf]Content-Length:9999999999999[lf][lf]@@@[lf]GET / [split]HTTP/1.1 [lf]Host: biel.dpnet.online[lf]Connection: Upgrade[lf]Upgrade: Websocket[lf][lf]", SNI: "", TlsIP: "", ProxyIP: "188.114.99.229#104.26.12.205#162.159.140.159#172.66.0.157#104.26.12.205#unpkg.com#104.18.7.80#104.18.6.80#104.18.6.4#104.18.7.4#104.16.53.111#104.16.51.111#162.159.140.159#bio-matrix.net#172.66.0.157#www.ultrahaus.com.br#172.67.74.152#www.researchgate.net#104.26.12.205#twitter.com#188.114.99.229#www.linkedin.com#172.64.150.8#x.com#104.18.36.19#www.science.org#172.64.151.237#knowledge.broadcom.com#104.26.5.32#sming.readthedocs.io#172.67.74.152#www.asmb.net#104.26.12.205#www.ip-tracker.org#172.67.74.152#www.joesandbox.com#172.67.74.152#orcid.org#104.16.239.166#domain.glass#104.17.64.225#brandfetch.com#104.16.239.166#newspaperarchive.com#104.16.239.166#wildlife.org#104.18.33.113#www.suffolkva.us#162.159.140.159#help.twitter.com#172.66.0.157#theimfmethod.com#172.67.74.152#store.vivo.com.br#104.26.12.205#lexiruffell.com#188.114.99.229#bio-matrix.net#172.64.150.8#www.ultrahaus.com.br#104.18.37.248#www.researchgate.net", ProxyPort: "80", SlowChave: "", SlowNameServer: "", SlowDns: "", Info: "Proxy" },
+    { Name: "📱VIVO BUNNY CDN ", FLAG: "vivo", Payload: "[lf]GET wss://dpnet.b-cdn.net/ [split]HTTP/1.1  [lf]Expect:100-continue[lf]Host: dpnet.b-cdn.net[lf]Connection: Upgrade[lf]Upgrade: websocket[lf][lf][split]GET/? HTTP/1.1 [lf]Host: [host][lf]Content-Length:9999999999999[lf][lf]@@@[lf]GET / [split]HTTP/1.1 [lf]Host: dpnet.b-cdn.net[lf]Connection: Upgrade[lf]Upgrade: Websocket[lf][lf]", SNI: "", TlsIP: "", ProxyIP: "fonts.bunny.net#beta.bunny.net#dash.bunny.net#bunny.net", ProxyPort: "80", SlowChave: "", SlowNameServer: "", SlowDns: "", Info: "Proxy" },
+    { Name: "📱VIVO BUNNY WS ", FLAG: "vivo", Payload: "[lf]GET wss://bunny.dpnet.online/ [split]HTTP/1.1  [lf]Expect:100-continue[lf]Host: bunny.dpnet.online[lf]Connection: Upgrade[lf]Upgrade: websocket[lf][lf][split]GET/? HTTP/1.1 [lf]Host: [host][lf]Content-Length:9999999999999[lf][lf]@@@[lf]GET / [split]HTTP/1.1 [lf]Host: bunny.dpnet.online[lf]Connection: Upgrade[lf]Upgrade: Websocket[lf][lf]", SNI: "", TlsIP: "", ProxyIP: "162.159.140.159#bio-matrix.net#172.66.0.157#www.ultrahaus.com.br#172.67.74.152#www.researchgate.net#104.26.12.205#twitter.com#188.114.99.229#www.linkedin.com#172.64.150.8#x.com#104.18.36.19#www.science.org#172.64.151.237#knowledge.broadcom.com#104.26.5.32#sming.readthedocs.io#172.67.74.152#www.asmb.net#104.26.12.205#www.ip-tracker.org#172.67.74.152#www.joesandbox.com#172.67.74.152#orcid.org#104.16.239.166#domain.glass#104.17.64.225#brandfetch.com#104.16.239.166#newspaperarchive.com#104.16.239.166#wildlife.org#104.18.33.113#www.suffolkva.us#162.159.140.159#help.twitter.com#172.66.0.157#theimfmethod.com#172.67.74.152#store.vivo.com.br#104.26.12.205#lexiruffell.com#188.114.99.229#bio-matrix.net#172.64.150.8#www.ultrahaus.com.br#104.18.37.248#www.researchgate.net", ProxyPort: "80", SlowChave: "", SlowNameServer: "", SlowDns: "", Info: "Proxy" },
+    { Name: "--------------------FIM--------------------", FLAG: "", Payload: "", SNI: "", TlsIP: "", ProxyIP: "", ProxyPort: "", SlowChave: "", SlowNameServer: "", SlowDns: "", Info: "" },
+    { Name: "📱TIM SALDO VALIDO ", FLAG: "tim", Payload: "GET / HTTP/1.1[lf]Host: proxy.dpnet.online[lf]Upgrade: websocket[lf][lf]@@@GET / HTTP/1.1[lf]Host: gringo.dpnet.online[lf]Upgrade: websocket[lf]x-skip: 200[lf]npv-x: ok[lf][lf]", SNI: "proxy.dpnet.online#gringo.dpnet.online", TlsIP: "162.247.241.4", ProxyIP: "162.247.241.4", ProxyPort: "443", SlowChave: "", SlowNameServer: "", SlowDns: "", Info: "Tlsws" },
+    { Name: "📱TIM FRONT 443 ", FLAG: "tim", Payload: "POST / HTTP/1.6 [crlf]Host: icatu-cobranca.stg.m4u.com.br[lf][lf]HEAD /SEU_ID HTTP/1.1[crlf]Host: china.dpnet.online[crlf][crlf]GET /SEU_ID HTTP/1.1[lf]Host: china.dpnet.online[lf]Host: icatu-cobranca.stg.m4u.com.br[lf]Connection: [method][lf]Connection: Upgrade[lf]Upgrade: Websocket[crlf][crlf]", SNI: "tim-pagamentocontas-api.m4u.com.br#web-timnegocia.stg.m4u.com.br#tim-pagamentocontas-web.m4u.com.br#52.67.117.241#52.67.65.49", TlsIP: "52.1.137.23#18.231.77.219", ProxyIP: "52.1.137.23#18.231.77.219", ProxyPort: "443", SlowChave: "", SlowNameServer: "", SlowDns: "", Info: "Tlsws" },
+    { Name: "--------------------FIM--------------------", FLAG: "", Payload: "", SNI: "", TlsIP: "", ProxyIP: "", ProxyPort: "", SlowChave: "", SlowNameServer: "", SlowDns: "", Info: "" }
+  ]
+};
+
+let indiceEdicao = -1;
+
+// =============================================
+// INICIALIZAR
+// =============================================
+window.onload = function() {
+  document.getElementById('mostraVersao').textContent = config.Version;
+  carregarDadosTela();
+  renderizarListaRedes();
+};
+
+function mostrarAba(nome) {
+  document.querySelectorAll('.card').forEach(el => {
+    if (el.id.startsWith('aba-')) el.style.display = 'none';
+  });
+  document.getElementById('aba-' + nome).style.display = 'block';
+}
+
+function trocarSwitch(el) {
+  el.classList.toggle('ativo');
+  const campoCor = el.parentElement.nextElementSibling;
+  if (el.classList.contains('ativo')) {
+    campoCor.classList.add('mostra');
+  } else {
+    campoCor.classList.remove('mostra');
+  }
+}
+
+function mostrarCamposSlow() {
+  const info = document.getElementById('redeInfo').value;
+  document.getElementById('areaSlowdns').style.display = info === 'Slowdns' ? 'block' : 'none';
+}
+
+// =============================================
+// CARREGAR DADOS NOS CAMPOS
+// =============================================
+function carregarDadosTela() {
+  // Links
+  document.getElementById('Sms').value = config.Sms;
+  document.getElementById('logoonline').value = config.logoonline;
+  document.getElementById('fundoonline').value = config.fundoonline;
+  document.getElementById('banneRodapeOnline').value = config.banneRodapeOnline;
+  document.getElementById('fundoDoLogOnline').value = config.fundoDoLogOnline;
+  document.getElementById('EmailFeedback').value = config.EmailFeedback;
+  document.getElementById('UrlContato').value = config.UrlContato;
+  document.getElementById('UrlTermos').value = config.UrlTermos;
+  document.getElementById('ModderLinkWhatsapp').value = config.ModderLinkWhatsapp;
+  document.getElementById('ModderLinkTelegram').value = config.ModderLinkTelegram;
+
+  // Cores — switches
+  function setSwitch(id, valor, campoCorId) {
+    const sw = document.getElementById(id);
+    const campo = document.getElementById(campoCorId);
+    if (valor && valor !== false && valor !== "false") {
+      sw.classList.add('ativo');
+      if (campo) {
+        campo.classList.add('mostra');
+        campo.value = typeof valor === 'string' ? valor : '#2563eb';
+      }
+    } else {
+      sw.classList.remove('ativo');
+      if (campo) campo.classList.remove('mostra');
+    }
+  }
+  setSwitch('ModderCorCaixaServ', config.ModderCorCaixaServ, 'corServidor');
+  setSwitch('ModderCorCaixaPay', config.ModderCorCaixaPay, 'corPayload');
+  setSwitch('ModderCorCaixaCentral', config.ModderCorCaixaCentral, 'corCentral');
+  setSwitch('ModderCorCaixaConexao', config.ModderCorCaixaConexao, 'corConexao');
+  setSwitch('ModderCorCaixaRegistro', config.ModderCorCaixaRegistro, 'corRegistro');
+  setSwitch('ModderCorCaixaFerramentas', config.ModderCorCaixaFerramentas, 'corFerramentas');
+  setSwitch('ModderCorCaixaUsuario', config.ModderCorCaixaUsuario, 'corUsuario');
+  setSwitch('ModderCorCaixaSenha', config.ModderCorCaixaSenha, 'corSenha');
+  setSwitch('ModderCorBotaoIniciar', config.ModderCorBotaoIniciar, 'corBotaoIniciar');
+  setSwitch('ModderCorBotaoLog', config.ModderCorBotaoLog, 'corBotaoLogin');
+  setSwitch('ModderCorBotaoConfig', config.ModderCorBotaoConfig, 'corBotaoConfig');
+  setSwitch('CheckUser', config.CheckUser === "true");
+
+  // DNS & UDP
+  document.getElementById('DnsPrimario').value = config.DnsPrimario;
+  document.getElementById('DnsSecundario').value = config.DnsSecundario;
+  document.getElementById('UdpPorta').value = config.Udp?.[0]?.Porta || '7300';
+
+  // Servidor
+  const s = config.Servers[0];
+  if (s) {
+    document.getElementById('ServerName').value = s.Name;
+    document.getElementById('ServerType').value = s.TYPE;
+    document.getElementById('ServerFlag').value = s.FLAG;
+    document.getElementById('ServerIP').value = s.ServerIP;
+    document.getElementById('ServerCheckUser').value = s.CheckUser;
+    document.getElementById('ServerPort').value = s.ServerPort;
+    document.getElementById('ServerSSLPort').value = s.SSLPort;
+    document.getElementById('ServerUSER').value = s.USER;
+    document.getElementById('ServerPASS').value = s.PASS;
+  }
+}
+
+// =============================================
+// LISTA DE REDES
+// =============================================
+function renderizarListaRedes() {
+  const container = document.getElementById('listaRedes');
+  container.innerHTML = config.Networks.map((rede, idx) => `
+    <div class="item-rede" onclick="editarRede(${idx})">
+      <strong>${rede.Name}</strong>
+      <small>${rede.FLAG ? rede.FLAG.toUpperCase() : ''} • ${rede.Info || '—'}</small>
+    </div>
+  `).join('');
+}
+
+function abrirModalRede() {
+  indiceEdicao = -1;
+  limparModalRede();
+  document.getElementById('modalRede').classList.add('aberto');
+}
+
+function editarRede(indice) {
+  indiceEdicao = indice;
+  const r = config.Networks[indice];
+  document.getElementById('tituloModalRede').textContent = 'Editar: ' + r.Name;
+  document.getElementById('redeNome').value = r.Name;
+  document.getElementById('redeFlag').value = r.FLAG;
+  document.getElementById('redeInfo').value = r.Info;
+  document.getElementById('redePayload').value = r.Payload;
+  document.getElementById('redeSNI').value = r.SNI;
+  document.getElementById('redeTlsIP').value = r.TlsIP;
+  document.getElementById('redeProxyIP').value = r.ProxyIP;
+  document.getElementById('redeProxyPort').value = r.ProxyPort;
+  document.getElementById('redeSlowChave').value = r.SlowChave || '';
+  document.getElementById('redeSlowNs').value = r.SlowNameServer || '';
+  document.getElementById('redeSlowDns').value = r.SlowDns || '';
+  mostrarCamposSlow();
+  document.getElementById('modalRede').classList.add('aberto');
+}
+
+function limparModalRede() {
+  document.getElementById('redeNome').value = '';
+  document.getElementById('redeFlag').value = '';
+  document.getElementById('redeInfo').value = 'Tlsws';
+  document.getElementById('redePayload').value = '';
+  document.getElementById('redeSNI').value = '';
+  document.getElementById('redeTlsIP').value = '';
+  document.getElementById('redeProxyIP').value = '';
+  document.getElementById('redeProxyPort').value = '';
+  document.getElementById('redeSlowChave').value = '';
+  document.getElementById('redeSlowNs').value = '';
+  document.getElementById('redeSlowDns').value = '';
+  mostrarCamposSlow();
+}
+
+function fecharModalRede() {
+  document.getElementById('modalRede').classList.remove('aberto');
+  indiceEdicao = -1;
+}
+
+function salvarRede() {
+  const novaRede = {
+    Name: document.getElementById('redeNome').value || 'Sem Nome',
+    FLAG: document.getElementById('redeFlag').value,
+    Payload: document.getElementById('redePayload').value,
+    SNI: document.getElementById('redeSNI').value,
+    TlsIP: document.getElementById('redeTlsIP').value,
+    ProxyIP: document.getElementById('redeProxyIP').value,
+    ProxyPort: document.getElementById('redeProxyPort').value,
+    SlowChave: document.getElementById('redeSlowChave').value,
+    SlowNameServer: document.getElementById('redeSlowNs').value,
+    SlowDns: document.getElementById('redeSlowDns').value,
+    Info: document.getElementById('redeInfo').value
+  };
+
+  if (indiceEdicao >= 0) {
+    config.Networks[indiceEdicao] = novaRede;
+  } else {
+    config.Networks.push(novaRede);
+  }
+
+  renderizarListaRedes();
+  fecharModalRede();
+}
+
+// =============================================
+// GERAR JSON FINAL — FORMATO EXATO
+// =============================================
+function gerarJSON() {
+  function getSwitch(id) {
+    const el = document.getElementById(id);
+    if (!el) return false;
+    if (el.classList.contains('ativo')) {
+      const campoCor = el.parentElement.nextElementSibling;
+      if (campoCor && campoCor.value && campoCor.value.startsWith('#')) {
+        return campoCor.value;
+      }
+      return true;
+    }
+    return false;
+  }
+
+  const jsonFinal = {
+    Version: config.Version,
+    PainelConecta5G: config.PainelConecta5G,
+    ReleaseNotes: config.ReleaseNotes,
+    UrlUpdate: config.UrlUpdate,
+    Sms: document.getElementById('Sms').value,
+    logoonline: document.getElementById('logoonline').value,
+    fundoonline: document.getElementById('fundoonline').value,
+    banneRodapeOnline: document.getElementById('banneRodapeOnline').value,
+    fundoDoLogOnline: document.getElementById('fundoDoLogOnline').value,
+    EmailFeedback: document.getElementById('EmailFeedback').value,
+    UrlContato: document.getElementById('UrlContato').value,
+    UrlTermos: document.getElementById('UrlTermos').value,
+    CheckUser: document.getElementById('CheckUser').classList.contains('ativo') ? "true" : "false",
+    ModderLinkWhatsapp: document.getElementById('ModderLinkWhatsapp').value,
+    ModderLinkTelegram: document.getElementById('ModderLinkTelegram').value,
+    ModderCorCaixaServ: getSwitch('ModderCorCaixaServ'),
+    ModderCorCaixaPay: getSwitch('ModderCorCaixaPay'),
+    ModderCorCaixaCentral: getSwitch('ModderCorCaixaCentral'),
+    ModderCorCaixaConexao: document.getElementById('ModderCorCaixaConexao').classList.contains('ativo') 
+      ? document.getElementById('corConexao').value : false,
+    ModderCorCaixaRegistro: getSwitch('ModderCorCaixaRegistro'),
+    ModderCorCaixaFerramentas: getSwitch('ModderCorCaixaFerramentas'),
+    ModderCorCaixaUsuario: getSwitch('ModderCorCaixaUsuario'),
+    ModderCorCaixaSenha: getSwitch('ModderCorCaixaSenha'),
+    ModderCorBotaoIniciar: document.getElementById('ModderCorBotaoIniciar').classList.contains('ativo') 
+      ? document.getElementById('corBotaoIniciar').value : false,
+    ModderCorBotaoLog: getSwitch('ModderCorBotaoLog'),
+    ModderCorBotaoConfig: getSwitch('ModderCorBotaoConfig'),
+    DnsPrimario: document.getElementById('DnsPrimario').value,
+    DnsSecundario: document.getElementById('DnsSecundario').value,
+    Udp: [{ Porta: document.getElementById('UdpPorta').value }],
+    Servers: [{
+      Name: document.getElementById('ServerName').value,
+      TYPE: document.getElementById('ServerType').value,
+      FLAG: document.getElementById('ServerFlag').value,
+      ServerIP: document.getElementById('ServerIP').value,
+      CheckUser: document.getElementById('ServerCheckUser').value,
+      ServerPort: document.getElementById('ServerPort').value,
+      SSLPort: document.getElementById('ServerSSLPort').value,
+      USER: document.getElementById('ServerUSER').value,
+      PASS: document.getElementById('ServerPASS').value
+    }],
+    Networks: config.Networks
+  };
+
+  const saida = JSON.stringify(jsonFinal, null, 4);
+  document.getElementById('jsonSaida').textContent = saida;
+  mostrarAba('json');
+}
+
+function copiarJSON() {
+  const texto = document.getElementById('jsonSaida').textContent;
+  navigator.clipboard.writeText(texto).then(() => {
+    alert('✅ Copiado com sucesso!');
+  }).catch(() => {
+    alert('Erro ao copiar — selecione e copie manualmente');
+  });
+}
+</script>
+</body>
+</html>
