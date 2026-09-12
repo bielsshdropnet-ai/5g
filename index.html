@@ -4,103 +4,130 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Painel DROPNET 5G</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg-fora: #c7c4ec;
-  --card: #f3f1fc;
+  /* base da marca (mantém a identidade roxa já usada no app) */
+  --bg-fora: #E3E0F6;
+  --card: #ffffff;
   --card-branco: #ffffff;
-  --roxo: #8783e6;
-  --roxo-escuro: #4b3fd6;
-  --azul: #1c1ce0;
-  --rosa: #e6398f;
-  --verde: #16a34a;
-  --vermelho: #dc2626;
-  --texto: #2c2a4a;
-  --texto-claro: #6b6890;
-  --borda: #c9c5f0;
+  --superficie-sutil: #F5F3FC;
+  --roxo: #6C5FE0;
+  --roxo-escuro: #4B3FD6;
+  --roxo-tinta: #241F52;
+  --azul: #2A2BD8;
+  --rosa: #E6398F;
+  --verde: #16A34A;
+  --vermelho: #DC2626;
+  --texto: #221E45;
+  --texto-claro: #6C6790;
+  --borda: #E0DCF5;
+
+  --fonte-titulo: 'Space Grotesk', 'Segoe UI', sans-serif;
+  --fonte-corpo: 'Inter', 'Segoe UI', sans-serif;
+
+  --sombra-card: 0 14px 34px -16px rgba(36, 31, 82, 0.35);
+  --sombra-botao: 0 6px 16px -6px rgba(75, 63, 214, 0.4);
+  --sombra-suave: 0 2px 10px rgba(36, 31, 82, 0.08);
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
-body { background: var(--bg-fora); min-height: 100vh; padding: 18px 14px; color: var(--texto); }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg-fora); min-height: 100vh; padding: 20px 14px;
+  color: var(--texto); font-family: var(--fonte-corpo); font-size: 14px; line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
 .container { max-width: 420px; margin: 0 auto; }
 
 .card {
-  background: var(--card); border-radius: 20px; padding: 22px 18px;
-  box-shadow: 0 6px 20px rgba(75, 63, 214, 0.18); margin-bottom: 16px;
+  background: var(--card); border-radius: 24px; padding: 24px 20px;
+  box-shadow: var(--sombra-card); border: 1px solid rgba(75, 63, 214, 0.06);
+  margin-bottom: 16px;
 }
 
-.topo { text-align: center; margin-bottom: 18px; }
+.topo { text-align: center; margin-bottom: 20px; }
 .topo h1 {
-  font-size: 26px; font-weight: 800; color: var(--roxo-escuro);
-  letter-spacing: 0.5px; line-height: 1.15;
+  font-family: var(--fonte-titulo); font-size: 23px; font-weight: 700; color: var(--roxo-tinta);
+  letter-spacing: -0.2px; line-height: 1.2;
 }
 .pilula {
-  display: inline-block; background: var(--rosa); color: white;
-  font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
-  padding: 6px 16px; border-radius: 20px; margin-top: 10px;
+  display: inline-block; background: var(--superficie-sutil); color: var(--roxo-escuro);
+  font-family: var(--fonte-titulo); font-size: 12px; font-weight: 600;
+  padding: 6px 16px; border-radius: 999px; margin-top: 10px;
+  border: 1px solid var(--borda);
 }
 
 h3 {
-  font-size: 14px; margin: 18px 0 10px; color: var(--roxo-escuro);
-  font-weight: 700; border-bottom: 2px solid var(--borda); padding-bottom: 6px;
+  font-family: var(--fonte-titulo); font-size: 14px; margin: 20px 0 12px; color: var(--roxo-tinta);
+  font-weight: 600; padding-bottom: 8px; border-bottom: 1px solid var(--borda);
 }
 
-label { font-size: 12px; color: var(--texto-claro); font-weight: 600; display: block; margin-bottom: 4px; margin-top: 8px; }
+label { font-size: 12.5px; color: var(--texto-claro); font-weight: 500; display: block; margin-bottom: 5px; margin-top: 10px; }
 
 textarea, input, select {
-  width: 100%; padding: 11px 14px; border: 2px solid var(--borda);
-  border-radius: 24px; font-size: 14px; background: var(--card-branco); color: var(--texto);
+  width: 100%; padding: 11px 14px; border: 1.5px solid var(--borda);
+  border-radius: 12px; font-size: 14px; font-family: var(--fonte-corpo);
+  background: var(--superficie-sutil); color: var(--texto);
+  transition: border-color .15s ease, background .15s ease;
 }
-textarea { border-radius: 14px; min-height: 100px; resize: vertical; font-family: 'Consolas', monospace; font-size: 12px; }
-input:focus, select:focus, textarea:focus { outline: none; border-color: var(--roxo); }
+textarea { min-height: 100px; resize: vertical; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 14px; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--roxo); background: var(--card-branco); }
 
 .grade-botoes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 6px; }
 
 .btn {
-  border: none; border-radius: 14px; padding: 14px 10px;
-  font-size: 13px; font-weight: 700; cursor: pointer; color: white;
+  border: none; border-radius: 13px; padding: 14px 10px;
+  font-family: var(--fonte-corpo); font-size: 13.5px; font-weight: 600; cursor: pointer; color: white;
   display: flex; align-items: center; justify-content: center; gap: 6px; text-align: center;
+  transition: transform .08s ease, filter .15s ease;
 }
-.btn-roxo { background: var(--roxo); }
+.btn:active { transform: scale(0.97); filter: brightness(0.95); }
+.btn-roxo { background: var(--roxo); box-shadow: var(--sombra-botao); }
 .btn-largo { grid-column: span 2; }
-.btn-azul { background: var(--azul); font-size: 16px; padding: 16px; margin-top: 14px; border-radius: 14px; }
+.btn-azul {
+  background: linear-gradient(135deg, var(--roxo-escuro), var(--azul)); color: white;
+  font-size: 15px; padding: 16px; margin-top: 14px; border-radius: 14px; font-weight: 700;
+  box-shadow: var(--sombra-botao);
+}
 .btn-sucesso { background: var(--verde); }
 .btn-perigo { background: var(--vermelho); }
-.btn-neutro { background: #e3e1f7; color: var(--roxo-escuro); }
+.btn-neutro { background: var(--superficie-sutil); color: var(--roxo-tinta); border: 1.5px solid var(--borda); }
 
 .aviso {
-  background: #fff4e0; border-left: 4px solid #f59e0b; padding: 10px 12px;
-  border-radius: 10px; margin-bottom: 14px; font-size: 12.5px; color: #7a5b06;
+  background: #FBF3E4; border: 1px solid #EFDBA8; padding: 11px 13px;
+  border-radius: 12px; margin-bottom: 14px; font-size: 12.5px; color: #7A5B06; line-height: 1.5;
 }
 
 .item-lista {
-  padding: 12px 14px; background: var(--card-branco); border-radius: 14px; margin: 8px 0;
-  border-left: 4px solid var(--roxo); box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  padding: 13px 14px; background: var(--superficie-sutil); border-radius: 14px; margin: 8px 0;
+  border: 1px solid var(--borda);
   display: flex; align-items: center; gap: 10px;
 }
 .item-lista .info-item { flex: 1; min-width: 0; }
-.item-lista .nome { font-weight: 700; font-size: 14px; }
+.item-lista .nome { font-family: var(--fonte-titulo); font-weight: 600; font-size: 14px; }
 .item-lista .sub { font-size: 12px; color: var(--texto-claro); display: block; margin-top: 2px; }
 .item-lista .acoes { display: flex; gap: 8px; margin-top: 10px; }
 .item-lista .acoes button {
   flex: 1; padding: 9px; border: none; border-radius: 10px; cursor: pointer;
-  font-size: 12.5px; font-weight: 700;
+  font-family: var(--fonte-corpo); font-size: 12.5px; font-weight: 600;
 }
-.acao-editar { background: #e0e7ff; color: #3730a3; }
-.acao-excluir { background: #fee2e2; color: #dc2626; }
+.acao-editar { background: #E4E1FA; color: #4338CA; }
+.acao-excluir { background: #FBE4E2; color: #B91C1C; }
 
 .ordem-botoes {
   display: flex; flex-direction: column; gap: 4px; flex-shrink: 0;
 }
 .ordem-botoes button {
-  width: 32px; height: 32px; border: none; border-radius: 8px; cursor: pointer;
-  font-size: 14px; font-weight: 800; background: #e3e1f7; color: var(--roxo-escuro);
+  width: 30px; height: 30px; border: 1px solid var(--borda); border-radius: 9px; cursor: pointer;
+  font-size: 13px; font-weight: 700; background: var(--card-branco); color: var(--roxo-tinta);
   display: flex; align-items: center; justify-content: center;
 }
-.ordem-botoes button:disabled { opacity: 0.35; cursor: not-allowed; }
-.ordem-botoes button:active:not(:disabled) { background: var(--roxo); color: white; }
+.ordem-botoes button:disabled { opacity: 0.3; cursor: not-allowed; }
+.ordem-botoes button:active:not(:disabled) { background: var(--roxo); color: white; border-color: var(--roxo); }
 
-.vazio { font-size: 12.5px; color: var(--texto-claro); text-align: center; padding: 10px; }
+.vazio { font-size: 12.5px; color: var(--texto-claro); text-align: center; padding: 14px; }
 
 .oculto { display: none !important; }
 
@@ -108,34 +135,201 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--r
 .rodape-botoes button { flex: 1; }
 
 .modal-fundo {
-  display: none; position: fixed; inset: 0; background: rgba(30, 20, 70, 0.5);
-  padding: 16px; z-index: 100; overflow-y: auto;
+  display: none; position: fixed; inset: 0; background: rgba(24, 20, 56, 0.55);
+  padding: 16px; z-index: 100; overflow-y: auto; backdrop-filter: blur(2px);
 }
 .modal-caixa {
-  background: white; border-radius: 18px; padding: 20px; max-width: 400px;
+  background: white; border-radius: 20px; padding: 22px; max-width: 400px;
   margin: 30px auto; max-height: 85vh; overflow-y: auto;
 }
 .modal-caixa h3 { margin-top: 0; }
-.modal-rodape { display: flex; gap: 10px; margin-top: 16px; }
-.modal-rodape button { flex: 1; padding: 12px; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; }
+.modal-rodape { display: flex; gap: 10px; margin-top: 18px; }
+.modal-rodape button {
+  flex: 1; padding: 13px; border: none; border-radius: 12px; cursor: pointer;
+  font-family: var(--fonte-corpo); font-weight: 600;
+}
 
-/* ---------- Tela de Login (inicial, ilustração) ---------- */
+/* ---------- Tela de Login (splash inicial) ---------- */
 #tela-login { display: flex; align-items: center; justify-content: center; min-height: 80vh; }
 #tela-login .card { text-align: center; width: 100%; }
-.logo-titulo {
-  font-size: 34px; font-weight: 900; line-height: 1.1;
+.marca-splash { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.marca-icone {
+  width: 56px; height: 56px; border-radius: 16px;
   background: linear-gradient(135deg, var(--roxo-escuro), var(--azul));
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-  letter-spacing: 0.5px; font-style: italic;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: var(--sombra-botao);
 }
-.dias-online { margin-top: 18px; font-size: 13px; font-weight: 600; color: var(--texto-claro); }
+.logo-titulo {
+  font-family: var(--fonte-titulo); font-size: 28px; font-weight: 700; line-height: 1.15;
+  color: var(--roxo-tinta); letter-spacing: -0.3px;
+}
+.dias-online {
+  margin-top: 4px; font-size: 12.5px; font-weight: 500; color: var(--texto-claro);
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.dias-online .ponto { width: 6px; height: 6px; border-radius: 50%; background: var(--verde); display: inline-block; }
 .btn-entrar {
-  width: 100%; border: none; border-radius: 20px; padding: 14px;
-  font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 20px;
+  width: 100%; border: none; border-radius: 14px; padding: 15px;
+  font-family: var(--fonte-corpo); font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 22px;
   display: flex; align-items: center; justify-content: center; gap: 8px;
-  letter-spacing: 1px; color: white;
-  background: linear-gradient(135deg, var(--roxo-escuro), var(--azul));
-  box-shadow: 0 6px 16px rgba(28, 28, 224, 0.3);
+  color: white; background: linear-gradient(135deg, var(--roxo-escuro), var(--azul));
+  box-shadow: var(--sombra-botao); transition: transform .08s ease;
+}
+.btn-entrar:active { transform: scale(0.98); }
+
+/* ---------- Menu de botões grandes da tela de edição ---------- */
+.menu-edicao-grade { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+.btn-menu {
+  background: var(--superficie-sutil); color: var(--roxo-tinta); border: 1.5px solid var(--borda);
+  border-radius: 16px; padding: 18px 12px; font-family: var(--fonte-corpo); font-weight: 600; font-size: 13px; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center;
+  transition: transform .08s ease, border-color .15s ease;
+}
+.btn-menu:active { transform: scale(0.97); border-color: var(--roxo); }
+.btn-menu .icone-menu {
+  width: 40px; height: 40px; border-radius: 12px; background: var(--roxo);
+  display: flex; align-items: center; justify-content: center; font-size: 19px;
+  box-shadow: var(--sombra-botao);
+}
+.btn-menu-largo { grid-column: span 2; }
+.btn-menu-gerar {
+  background: linear-gradient(135deg, var(--roxo-escuro), var(--azul)); color: white; border: none;
+  grid-column: span 2; flex-direction: row; padding: 17px; font-size: 15px; font-weight: 700;
+  box-shadow: var(--sombra-botao);
+}
+.btn-menu-gerar .icone-menu { background: rgba(255,255,255,0.18); box-shadow: none; }
+
+/* ---------- Tela cheia de cada seção (abre ao tocar no botão do menu) ---------- */
+.secao-completa { display: none; }
+.secao-completa.ativa { display: block; }
+.secao-completa h3:first-of-type { margin-top: 0; }
+.cabecalho-secao {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+}
+.btn-voltar-secao {
+  border: 1.5px solid var(--borda); background: var(--card-branco); color: var(--roxo-tinta);
+  height: 38px; padding: 0 14px; border-radius: 12px; font-family: var(--fonte-corpo);
+  font-size: 13.5px; font-weight: 600; cursor: pointer; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.titulo-secao { font-family: var(--fonte-titulo); font-size: 16px; font-weight: 700; color: var(--roxo-tinta); }
+
+/* ---------- Campo de cor com paleta ---------- */
+.campo-cor { display: flex; gap: 8px; align-items: center; }
+.campo-cor input[type="text"] { flex: 1; }
+.preview-cor {
+  width: 40px; height: 40px; border-radius: 12px; border: 1.5px solid var(--borda);
+  flex-shrink: 0; background: #fff; cursor: pointer; padding: 0; -webkit-appearance: none;
+  background-image:
+    linear-gradient(45deg, #ddd 25%, transparent 25%), linear-gradient(-45deg, #ddd 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #ddd 75%), linear-gradient(-45deg, transparent 75%, #ddd 75%);
+  background-size: 10px 10px; background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
+  background-color: white; position: relative;
+}
+.preview-cor::after {
+  content: ''; position: absolute; inset: 0; border-radius: 10px; background: var(--cor-atual, transparent);
+}
+.preview-cor:active { transform: scale(0.93); }
+.paleta-cores { display: flex; flex-wrap: wrap; gap: 11px; margin: 12px 0 8px; }
+.swatch-cor {
+  width: 36px; height: 36px; border-radius: 11px; border: 2px solid rgba(255,255,255,0.7);
+  outline: 1px solid rgba(36,31,82,0.12); cursor: pointer; padding: 0; transition: transform .08s ease;
+}
+.swatch-cor:active { transform: scale(0.85); }
+
+/* ---------- Seletor de cor completo (gradiente + matiz + transparência) ---------- */
+.cor-sv-caixa {
+  width: 100%; height: 150px; position: relative; cursor: crosshair;
+  touch-action: none; margin-top: 4px;
+}
+.cor-sv-fundo {
+  position: absolute; inset: 0; border-radius: 14px; overflow: hidden;
+}
+.cor-sv-preto {
+  position: absolute; inset: 0; background: linear-gradient(to top, #000, rgba(0,0,0,0));
+}
+.cor-alca {
+  position: absolute; width: 22px; height: 22px; border-radius: 50%;
+  border: 2.5px solid white; box-shadow: 0 1px 4px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(0,0,0,0.15);
+  transform: translate(-50%, -50%); pointer-events: none;
+}
+.cor-slider {
+  position: relative; height: 26px; border-radius: 13px; margin-top: 16px; cursor: pointer; touch-action: none;
+}
+.cor-slider .cor-alca { top: 50%; }
+.cor-slider-hue {
+  background: linear-gradient(to right, #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%);
+}
+.cor-slider-alpha {
+  background-image:
+    linear-gradient(45deg, #ddd 25%, transparent 25%), linear-gradient(-45deg, #ddd 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #ddd 75%), linear-gradient(-45deg, transparent 75%, #ddd 75%);
+  background-size: 13px 13px; background-position: 0 0, 0 6.5px, 6.5px -6.5px, -6.5px 0px; background-color: white;
+}
+.cor-slider-alpha-cor { position: absolute; inset: 0; border-radius: 13px; }
+.cor-hex-linha { display: flex; align-items: center; gap: 10px; margin-top: 16px; }
+.cor-hex-linha input { flex: 1; font-family: 'SFMono-Regular', Consolas, monospace; }
+.cor-hex-linha .preview-cor { cursor: default; }
+.cor-hex-linha .preview-cor:active { transform: none; }
+.cor-presets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 16px; }
+.cor-preset-btn {
+  height: 38px; border-radius: 10px; border: 1.5px solid var(--borda); cursor: pointer; padding: 0;
+  position: relative; overflow: hidden;
+}
+.cor-preset-btn:active { transform: scale(0.95); }
+.cor-preset-alpha {
+  background-image:
+    linear-gradient(45deg, #ddd 25%, transparent 25%), linear-gradient(-45deg, #ddd 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #ddd 75%), linear-gradient(-45deg, transparent 75%, #ddd 75%);
+  background-size: 10px 10px; background-position: 0 0, 0 5px, 5px -5px, -5px 0px; background-color: white;
+}
+.cor-preset-alpha::after {
+  content: ''; position: absolute; inset: 0; background: var(--cor-atual, transparent);
+}
+
+/* ---------- Ícones dentro de botões (SVG no lugar de emoji) ---------- */
+.icone-menu svg { width: 19px; height: 19px; }
+.icone-inline { display: inline-flex; vertical-align: -4px; margin-right: 6px; color: var(--roxo-escuro); }
+.icone-inline svg { width: 16px; height: 16px; }
+.btn svg, .btn-entrar svg, .btn-voltar-secao svg { width: 16px; height: 16px; }
+
+/* ---------- Notificações (toast) — substitui alert() nativo ---------- */
+.toast-container {
+  position: fixed; left: 50%; bottom: max(20px, env(safe-area-inset-bottom)); transform: translateX(-50%);
+  z-index: 300; display: flex; flex-direction: column; gap: 8px;
+  width: calc(100% - 32px); max-width: 380px; pointer-events: none; align-items: center;
+}
+.toast {
+  pointer-events: auto; background: var(--roxo-tinta); color: white;
+  padding: 13px 16px; border-radius: 14px; font-size: 13.5px; font-weight: 600;
+  box-shadow: var(--sombra-card); display: flex; align-items: center; gap: 10px;
+  opacity: 0; transform: translateY(10px); transition: opacity .25s ease, transform .25s ease;
+  width: 100%;
+}
+.toast.mostrar { opacity: 1; transform: translateY(0); }
+.toast-icone {
+  width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.18);
+}
+.toast-icone svg { width: 12px; height: 12px; }
+.toast-sucesso { background: #15803D; }
+.toast-erro { background: #B91C1C; }
+.toast-aviso { background: #92400E; }
+
+/* ---------- Acessibilidade: foco visível pra navegação por teclado ---------- */
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2.5px solid var(--roxo-escuro); outline-offset: 2px;
+}
+
+/* ---------- Toque confortável em telas pequenas ---------- */
+button { touch-action: manipulation; }
+.item-lista .acoes button, .modal-rodape button, .btn { min-height: 44px; }
+.ordem-botoes button { width: 34px; height: 34px; }
+.btn-voltar-secao { min-height: 42px; }
+input, select { font-size: 16px; } /* evita zoom automático no iOS ao focar */
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
 }
 </style>
 </head>
@@ -146,18 +340,25 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--r
   <!-- TELA 0 — LOGIN (ILUSTRAÇÃO, sem usuário/senha) -->
   <div id="tela-login">
     <div class="card">
-      <div class="logo-titulo">DROPNET<br>5G</div>
-      <span class="pilula">CONHECER DROPNET 5G</span>
-      <div class="dias-online" id="diasOnline">Site Online: — dias</div>
-      <button class="btn-entrar" onclick="entrarNoPainel()">➡️ Entrar</button>
+      <div class="marca-splash">
+        <div class="marca-icone">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 18h2v-4H3v4zm4 0h2v-8H7v8zm4 0h2v-12h-2v12zm4 0h2v-6h-2v6zm4 0h2v-16h-2v16z" fill="white"/>
+          </svg>
+        </div>
+        <div class="logo-titulo">DROPNET 5G</div>
+        <span class="pilula">Editor de configuração</span>
+        <div class="dias-online" id="diasOnline"><span class="ponto"></span>Site no ar há — dias</div>
+      </div>
+      <button class="btn-entrar" onclick="entrarNoPainel()">Entrar no painel →</button>
     </div>
   </div>
 
   <!-- TELA 1 — COLAR O JSON -->
   <div class="card oculto" id="tela-colar">
     <div class="topo">
-      <h1>EDITOR<br>CONFIG DROPNET 5G</h1>
-      <span class="pilula">COLE · EDITE · GERE</span>
+      <h1>Editor de config<br>DROPNET 5G</h1>
+      <span class="pilula">Cole, edite e gere de novo</span>
     </div>
     <div class="aviso">Cole o JSON do seu app abaixo e toque em Carregar para editar cada campo.</div>
     <label>JSON de entrada</label>
@@ -165,68 +366,157 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--r
     <button class="btn btn-azul btn-largo" style="width:100%;" onclick="carregarJSON()">✅ Carregar e Editar</button>
   </div>
 
-  <!-- TELA 2 — EDITAR TUDO -->
+  <!-- TELA 2 — EDITAR TUDO (menu de botões grandes) -->
   <div id="tela-edicao" class="oculto">
     <div class="card">
       <div class="topo">
-        <h1>PAINEL<br>DE EDIÇÃO</h1>
-        <span class="pilula" id="versaoTopo">VERSÃO —</span>
+        <h1>Painel de edição</h1>
+        <span class="pilula" id="versaoTopo">Versão —</span>
       </div>
 
-      <h3>📌 Versão &amp; Links Principais</h3>
-      <label>Versão</label><input type="number" id="edt_Version">
-      <label>PainelConecta5G</label><input type="text" id="edt_PainelConecta5G">
-      <label>ReleaseNotes</label><input type="text" id="edt_ReleaseNotes">
-      <label>UrlUpdate</label><input type="text" id="edt_UrlUpdate">
+      <!-- MENU PRINCIPAL: cada botão abre uma seção -->
+      <div id="menu-edicao">
+        <div class="menu-edicao-grade">
+          <button class="btn-menu" onclick="abrirSecao('geral')"><span class="icone-menu"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.07 0l1.93-1.93a5 5 0 0 0-7.07-7.07L10.5 5.5"/><path d="M14 11a5 5 0 0 0-7.07 0L5 12.93a5 5 0 0 0 7.07 7.07L13.5 18.5"/></svg></span>Geral</button>
+          <button class="btn-menu" onclick="abrirSecao('cores')"><span class="icone-menu"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 0 20c1.1 0 2-.9 2-2 0-.5-.2-1-.5-1.4-.3-.4-.5-.9-.5-1.4 0-1.1.9-2 2-2h2.3c1.8 0 3.2-1.4 3.2-3.2C21 6.4 17 2 12 2Z"/><circle cx="7.5" cy="10.5" r="1.1" fill="white" stroke="none"/><circle cx="10.5" cy="7" r="1.1" fill="white" stroke="none"/><circle cx="15" cy="7.5" r="1.1" fill="white" stroke="none"/></svg></span>Cores</button>
+          <button class="btn-menu" onclick="abrirSecao('dns')"><span class="icone-menu"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span>DNS</button>
+          <button class="btn-menu" onclick="abrirSecao('udp')"><span class="icone-menu"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v4M15 2v4M7 6h10v4a5 5 0 0 1-5 5 5 5 0 0 1-5-5V6Z"/><path d="M12 15v4M9 21h6"/></svg></span>Portas UDP</button>
+          <button class="btn-menu" onclick="abrirSecao('servidores')"><span class="icone-menu"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><circle cx="7" cy="7" r=".6" fill="white" stroke="none"/><circle cx="7" cy="17" r=".6" fill="white" stroke="none"/></svg></span>Servidores</button>
+          <button class="btn-menu" onclick="abrirSecao('redes')"><span class="icone-menu"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg></span>Redes / Payloads</button>
+          <button class="btn-menu btn-menu-gerar" onclick="gerarJSON()"><span class="icone-menu"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg></span>Gerar JSON</button>
+        </div>
+        <div class="rodape-botoes">
+          <button class="btn btn-neutro" style="width:100%;" onclick="voltarParaColar()">⬅️ Voltar pro início</button>
+        </div>
+      </div>
 
-      <h3>🔗 Links Gerais</h3>
-      <label>Sms</label><input type="text" id="edt_Sms">
-      <label>logoonline</label><input type="text" id="edt_logoonline">
-      <label>fundoonline</label><input type="text" id="edt_fundoonline">
-      <label>banneRodapeOnline</label><input type="text" id="edt_banneRodapeOnline">
-      <label>fundoDoLogOnline</label><input type="text" id="edt_fundoDoLogOnline">
-      <label>EmailFeedback</label><input type="text" id="edt_EmailFeedback">
-      <label>UrlContato</label><input type="text" id="edt_UrlContato">
-      <label>UrlTermos</label><input type="text" id="edt_UrlTermos">
-      <label>ModderLinkWhatsapp</label><input type="text" id="edt_ModderLinkWhatsapp">
-      <label>ModderLinkTelegram</label><input type="text" id="edt_ModderLinkTelegram">
-      <label>CheckUser</label>
-      <select id="edt_CheckUser"><option value="true">true</option><option value="false">false</option></select>
+      <!-- SEÇÃO: GERAL -->
+      <div class="secao-completa" id="secao-geral">
+        <div class="cabecalho-secao">
+          <button class="btn-voltar-secao" onclick="fecharSecao()">← Voltar</button>
+          <span class="titulo-secao"><span class="icone-inline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.07 0l1.93-1.93a5 5 0 0 0-7.07-7.07L10.5 5.5"/><path d="M14 11a5 5 0 0 0-7.07 0L5 12.93a5 5 0 0 0 7.07 7.07L13.5 18.5"/></svg></span>Geral</span>
+        </div>
+        <h3>📌 Versão &amp; Links Principais</h3>
+        <label>Versão</label><input type="number" id="edt_Version">
+        <label>PainelConecta5G</label><input type="text" id="edt_PainelConecta5G">
+        <label>ReleaseNotes</label><input type="text" id="edt_ReleaseNotes">
+        <label>UrlUpdate</label><input type="text" id="edt_UrlUpdate">
 
-      <h3>🎨 Cores</h3>
-      <label>ModderCorCaixaServ</label><input type="text" id="edt_ModderCorCaixaServ">
-      <label>ModderCorCaixaPay</label><input type="text" id="edt_ModderCorCaixaPay">
-      <label>ModderCorCaixaCentral</label><input type="text" id="edt_ModderCorCaixaCentral">
-      <label>ModderCorCaixaConexao</label><input type="text" id="edt_ModderCorCaixaConexao">
-      <label>ModderCorCaixaRegistro</label><input type="text" id="edt_ModderCorCaixaRegistro">
-      <label>ModderCorCaixaFerramentas</label><input type="text" id="edt_ModderCorCaixaFerramentas">
-      <label>ModderCorCaixaUsuario</label><input type="text" id="edt_ModderCorCaixaUsuario">
-      <label>ModderCorCaixaSenha</label><input type="text" id="edt_ModderCorCaixaSenha">
-      <label>ModderCorBotaoIniciar</label><input type="text" id="edt_ModderCorBotaoIniciar">
-      <label>ModderCorBotaoLog</label><input type="text" id="edt_ModderCorBotaoLog">
-      <label>ModderCorBotaoConfig</label><input type="text" id="edt_ModderCorBotaoConfig">
+        <h3>🔗 Links Gerais</h3>
+        <label>Sms</label><input type="text" id="edt_Sms">
+        <label>logoonline</label><input type="text" id="edt_logoonline">
+        <label>fundoonline</label><input type="text" id="edt_fundoonline">
+        <label>banneRodapeOnline</label><input type="text" id="edt_banneRodapeOnline">
+        <label>fundoDoLogOnline</label><input type="text" id="edt_fundoDoLogOnline">
+        <label>EmailFeedback</label><input type="text" id="edt_EmailFeedback">
+        <label>UrlContato</label><input type="text" id="edt_UrlContato">
+        <label>UrlTermos</label><input type="text" id="edt_UrlTermos">
+        <label>ModderLinkWhatsapp</label><input type="text" id="edt_ModderLinkWhatsapp">
+        <label>ModderLinkTelegram</label><input type="text" id="edt_ModderLinkTelegram">
+        <label>CheckUser</label>
+        <select id="edt_CheckUser"><option value="true">true</option><option value="false">false</option></select>
+        <button class="btn btn-neutro" style="width:100%; margin-top:16px;" onclick="fecharSecao()">← Voltar ao menu</button>
+      </div>
 
-      <h3>🌐 DNS</h3>
-      <label>DnsPrimario</label><input type="text" id="edt_DnsPrimario">
-      <label>DnsSecundario</label><input type="text" id="edt_DnsSecundario">
+      <!-- SEÇÃO: CORES -->
+      <div class="secao-completa" id="secao-cores">
+        <div class="cabecalho-secao">
+          <button class="btn-voltar-secao" onclick="fecharSecao()">← Voltar</button>
+          <span class="titulo-secao"><span class="icone-inline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 0 20c1.1 0 2-.9 2-2 0-.5-.2-1-.5-1.4-.3-.4-.5-.9-.5-1.4 0-1.1.9-2 2-2h2.3c1.8 0 3.2-1.4 3.2-3.2C21 6.4 17 2 12 2Z"/><circle cx="7.5" cy="10.5" r="1.1" fill="currentColor" stroke="none"/><circle cx="10.5" cy="7" r="1.1" fill="currentColor" stroke="none"/><circle cx="15" cy="7.5" r="1.1" fill="currentColor" stroke="none"/></svg></span>Cores</span>
+        </div>
+        <div class="aviso">Toque em uma cor da paleta pra preencher o campo. Se quiser um tom exato, pode digitar o código também.</div>
+        <h3>🎨 Cores do App</h3>
 
-      <h3>🔌 Portas UDP (todas)</h3>
-      <button class="btn btn-roxo" style="width:100%; margin-bottom:10px;" onclick="adicionarUdp()">+ Adicionar Porta UDP</button>
-      <div id="listaUdp"></div>
+        <label>ModderCorCaixaServ</label>
+        <div class="campo-cor"><input type="text" id="edt_ModderCorCaixaServ" oninput="atualizarPreviewCor('edt_ModderCorCaixaServ')"><button type="button" class="preview-cor" id="preview_edt_ModderCorCaixaServ" onclick="abrirSeletorCor('edt_ModderCorCaixaServ')" aria-label="Abrir seletor de cor"></button></div>
+        <div class="paleta-cores" data-alvo="edt_ModderCorCaixaServ"></div>
 
-      <h3>🖥️ Servidores (todos)</h3>
-      <div class="aviso">Use as setinhas ▲▼ para mudar a ordem. O primeiro da lista é o que aparece no topo do app.</div>
-      <button class="btn btn-roxo" style="width:100%; margin-bottom:10px;" onclick="adicionarServidor()">+ Adicionar Servidor</button>
-      <div id="listaServidores"></div>
+        <label>ModderCorCaixaPay</label>
+        <div class="campo-cor"><input type="text" id="edt_ModderCorCaixaPay" oninput="atualizarPreviewCor('edt_ModderCorCaixaPay')"><button type="button" class="preview-cor" id="preview_edt_ModderCorCaixaPay" onclick="abrirSeletorCor('edt_ModderCorCaixaPay')" aria-label="Abrir seletor de cor"></button></div>
+        <div class="paleta-cores" data-alvo="edt_ModderCorCaixaPay"></div>
 
-      <h3>📋 Redes / Payloads</h3>
-      <div class="aviso">Use as setinhas ▲▼ para mudar a ordem. O primeiro da lista é o que aparece no topo do app.</div>
-      <button class="btn btn-roxo" style="width:100%; margin-bottom:10px;" onclick="adicionarRede()">+ Adicionar Rede</button>
-      <div id="listaRedes"></div>
+        <label>ModderCorCaixaCentral</label>
+        <div class="campo-cor"><input type="text" id="edt_ModderCorCaixaCentral" oninput="atualizarPreviewCor('edt_ModderCorCaixaCentral')"><button type="button" class="preview-cor" id="preview_edt_ModderCorCaixaCentral" onclick="abrirSeletorCor('edt_ModderCorCaixaCentral')" aria-label="Abrir seletor de cor"></button></div>
+        <div class="paleta-cores" data-alvo="edt_ModderCorCaixaCentral"></div>
 
-      <div class="rodape-botoes">
-        <button class="btn btn-neutro" onclick="voltarParaColar()">⬅️ Voltar</button>
-        <button class="btn btn-sucesso" onclick="gerarJSON()">💾 Gerar JSON</button>
+        <label>ModderCorCaixaConexao</label>
+        <div class="campo-cor"><input type="text" id="edt_ModderCorCaixaConexao" oninput="atualizarPreviewCor('edt_ModderCorCaixaConexao')"><button type="button" class="preview-cor" id="preview_edt_ModderCorCaixaConexao" onclick="abrirSeletorCor('edt_ModderCorCaixaConexao')" aria-label="Abrir seletor de cor"></button></div>
+        <div class="paleta-cores" data-alvo="edt_ModderCorCaixaConexao"></div>
+
+        <label>ModderCorCaixaRegistro</label>
+        <div class="campo-cor"><input type="text" id="edt_ModderCorCaixaRegistro" oninput="atualizarPreviewCor('edt_ModderCorCaixaRegistro')"><button type="button" class="preview-cor" id="preview_edt_ModderCorCaixaRegistro" onclick="abrirSeletorCor('edt_ModderCorCaixaRegistro')" aria-label="Abrir seletor de cor"></button></div>
+        <div class="paleta-cores" data-alvo="edt_ModderCorCaixaRegistro"></div>
+
+        <label>ModderCorCaixaFerramentas</label>
+        <div class="campo-cor"><input type="text" id="edt_ModderCorCaixaFerramentas" oninput="atualizarPreviewCor('edt_ModderCorCaixaFerramentas')"><button type="button" class="preview-cor" id="preview_edt_ModderCorCaixaFerramentas" onclick="abrirSeletorCor('edt_ModderCorCaixaFerramentas')" aria-label="Abrir seletor de cor"></button></div>
+        <div class="paleta-cores" data-alvo="edt_ModderCorCaixaFerramentas"></div>
+
+        <label>ModderCorCaixaUsuario</label>
+        <div class="campo-cor"><input type="text" id="edt_ModderCorCaixaUsuario" oninput="atualizarPreviewCor('edt_ModderCorCaixaUsuario')"><button type="button" class="preview-cor" id="preview_edt_ModderCorCaixaUsuario" onclick="abrirSeletorCor('edt_ModderCorCaixaUsuario')" aria-label="Abrir seletor de cor"></button></div>
+        <div class="paleta-cores" data-alvo="edt_ModderCorCaixaUsuario"></div>
+
+        <label>ModderCorCaixaSenha</label>
+        <div class="campo-cor"><input type="text" id="edt_ModderCorCaixaSenha" oninput="atualizarPreviewCor('edt_ModderCorCaixaSenha')"><button type="button" class="preview-cor" id="preview_edt_ModderCorCaixaSenha" onclick="abrirSeletorCor('edt_ModderCorCaixaSenha')" aria-label="Abrir seletor de cor"></button></div>
+        <div class="paleta-cores" data-alvo="edt_ModderCorCaixaSenha"></div>
+
+        <label>ModderCorBotaoIniciar</label>
+        <div class="campo-cor"><input type="text" id="edt_ModderCorBotaoIniciar" oninput="atualizarPreviewCor('edt_ModderCorBotaoIniciar')"><button type="button" class="preview-cor" id="preview_edt_ModderCorBotaoIniciar" onclick="abrirSeletorCor('edt_ModderCorBotaoIniciar')" aria-label="Abrir seletor de cor"></button></div>
+        <div class="paleta-cores" data-alvo="edt_ModderCorBotaoIniciar"></div>
+
+        <label>ModderCorBotaoLog</label>
+        <div class="campo-cor"><input type="text" id="edt_ModderCorBotaoLog" oninput="atualizarPreviewCor('edt_ModderCorBotaoLog')"><button type="button" class="preview-cor" id="preview_edt_ModderCorBotaoLog" onclick="abrirSeletorCor('edt_ModderCorBotaoLog')" aria-label="Abrir seletor de cor"></button></div>
+        <div class="paleta-cores" data-alvo="edt_ModderCorBotaoLog"></div>
+
+        <label>ModderCorBotaoConfig</label>
+        <div class="campo-cor"><input type="text" id="edt_ModderCorBotaoConfig" oninput="atualizarPreviewCor('edt_ModderCorBotaoConfig')"><button type="button" class="preview-cor" id="preview_edt_ModderCorBotaoConfig" onclick="abrirSeletorCor('edt_ModderCorBotaoConfig')" aria-label="Abrir seletor de cor"></button></div>
+        <div class="paleta-cores" data-alvo="edt_ModderCorBotaoConfig"></div>
+        <button class="btn btn-neutro" style="width:100%; margin-top:16px;" onclick="fecharSecao()">← Voltar ao menu</button>
+      </div>
+
+      <!-- SEÇÃO: DNS -->
+      <div class="secao-completa" id="secao-dns">
+        <div class="cabecalho-secao">
+          <button class="btn-voltar-secao" onclick="fecharSecao()">← Voltar</button>
+          <span class="titulo-secao"><span class="icone-inline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span>DNS</span>
+        </div>
+        <label>DnsPrimario</label><input type="text" id="edt_DnsPrimario">
+        <label>DnsSecundario</label><input type="text" id="edt_DnsSecundario">
+        <button class="btn btn-neutro" style="width:100%; margin-top:16px;" onclick="fecharSecao()">← Voltar ao menu</button>
+      </div>
+
+      <!-- SEÇÃO: UDP -->
+      <div class="secao-completa" id="secao-udp">
+        <div class="cabecalho-secao">
+          <button class="btn-voltar-secao" onclick="fecharSecao()">← Voltar</button>
+          <span class="titulo-secao"><span class="icone-inline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v4M15 2v4M7 6h10v4a5 5 0 0 1-5 5 5 5 0 0 1-5-5V6Z"/><path d="M12 15v4M9 21h6"/></svg></span>Portas UDP</span>
+        </div>
+        <button class="btn btn-roxo" style="width:100%; margin-bottom:10px;" onclick="adicionarUdp()">+ Adicionar Porta UDP</button>
+        <div id="listaUdp"></div>
+        <button class="btn btn-neutro" style="width:100%; margin-top:16px;" onclick="fecharSecao()">← Voltar ao menu</button>
+      </div>
+
+      <!-- SEÇÃO: SERVIDORES -->
+      <div class="secao-completa" id="secao-servidores">
+        <div class="cabecalho-secao">
+          <button class="btn-voltar-secao" onclick="fecharSecao()">← Voltar</button>
+          <span class="titulo-secao"><span class="icone-inline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><circle cx="7" cy="7" r=".6" fill="currentColor" stroke="none"/><circle cx="7" cy="17" r=".6" fill="currentColor" stroke="none"/></svg></span>Servidores</span>
+        </div>
+        <div class="aviso">Use as setinhas ▲▼ para mudar a ordem. O primeiro da lista é o que aparece no topo do app.</div>
+        <button class="btn btn-roxo" style="width:100%; margin-bottom:10px;" onclick="adicionarServidor()">+ Adicionar Servidor</button>
+        <div id="listaServidores"></div>
+        <button class="btn btn-neutro" style="width:100%; margin-top:16px;" onclick="fecharSecao()">← Voltar ao menu</button>
+      </div>
+
+      <!-- SEÇÃO: REDES -->
+      <div class="secao-completa" id="secao-redes">
+        <div class="cabecalho-secao">
+          <button class="btn-voltar-secao" onclick="fecharSecao()">← Voltar</button>
+          <span class="titulo-secao"><span class="icone-inline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg></span>Redes / Payloads</span>
+        </div>
+        <div class="aviso">Use as setinhas ▲▼ para mudar a ordem. O primeiro da lista é o que aparece no topo do app.</div>
+        <button class="btn btn-roxo" style="width:100%; margin-bottom:10px;" onclick="adicionarRede()">+ Adicionar Rede</button>
+        <div id="listaRedes"></div>
+        <button class="btn btn-neutro" style="width:100%; margin-top:16px;" onclick="fecharSecao()">← Voltar ao menu</button>
       </div>
     </div>
   </div>
@@ -235,8 +525,8 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--r
   <div id="tela-resultado" class="oculto">
     <div class="card">
       <div class="topo">
-        <h1>JSON<br>PRONTO ✅</h1>
-        <span class="pilula">COPIE E COLE NO APP</span>
+        <h1>JSON pronto</h1>
+        <span class="pilula">Copie e cole no app</span>
       </div>
       <textarea id="saidaJSON" readonly style="min-height: 220px;"></textarea>
       <div class="grade-botoes">
@@ -307,11 +597,243 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--r
   </div>
 </div>
 
+<!-- MODAL — CONFIRMAÇÃO (substitui o confirm() nativo do navegador) -->
+<div id="modalConfirmar" class="modal-fundo">
+  <div class="modal-caixa">
+    <h3 id="tituloConfirmar">Confirmar ação</h3>
+    <p id="mensagemConfirmar" style="font-size:13.5px; color:var(--texto-claro); line-height:1.5; margin-top:4px;"></p>
+    <div class="modal-rodape">
+      <button class="btn-neutro" onclick="fecharModal('modalConfirmar')">Cancelar</button>
+      <button class="btn-perigo" style="color:white;" onclick="executarConfirmacao()">Excluir</button>
+    </div>
+  </div>
+</div>
+
+<!-- Notificações (toast) -->
+<!-- MODAL — SELETOR DE COR COMPLETO -->
+<div id="modalCor" class="modal-fundo">
+  <div class="modal-caixa">
+    <h3>Escolher cor</h3>
+
+    <label>Saturação e brilho</label>
+    <div class="cor-sv-caixa" id="corSvCaixa">
+      <div class="cor-sv-fundo" id="corSvFundo">
+        <div class="cor-sv-preto"></div>
+      </div>
+      <div class="cor-alca" id="corAlcaSv"></div>
+    </div>
+
+    <label>Matiz</label>
+    <div class="cor-slider cor-slider-hue" id="corSliderHue">
+      <div class="cor-alca" id="corAlcaHue"></div>
+    </div>
+
+    <label>Transparência</label>
+    <div class="cor-slider cor-slider-alpha" id="corSliderAlpha">
+      <div class="cor-slider-alpha-cor" id="corAlphaCor"></div>
+      <div class="cor-alca" id="corAlcaAlpha"></div>
+    </div>
+
+    <label>Código da cor</label>
+    <div class="cor-hex-linha">
+      <button type="button" class="preview-cor" id="corPreviewGrande" tabindex="-1"></button>
+      <input type="text" id="corHexInput" oninput="digitouHexNoSeletor()" placeholder="#RRGGBB">
+    </div>
+
+    <label>Cores rápidas</label>
+    <div class="cor-presets" id="corPresets"></div>
+
+    <div class="modal-rodape">
+      <button class="btn-neutro" onclick="fecharModal('modalCor')">Cancelar</button>
+      <button class="btn-sucesso" style="color:white;" onclick="aplicarCorSelecionada()">Salvar alterações</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
 <script>
 let dados = null;
 let idxRede = -1;
 let idxServidor = -1;
 let idxUdp = -1;
+
+// Lista de todos os campos que representam uma cor
+const CAMPOS_COR = [
+  'edt_ModderCorCaixaServ','edt_ModderCorCaixaPay','edt_ModderCorCaixaCentral',
+  'edt_ModderCorCaixaConexao','edt_ModderCorCaixaRegistro','edt_ModderCorCaixaFerramentas',
+  'edt_ModderCorCaixaUsuario','edt_ModderCorCaixaSenha','edt_ModderCorBotaoIniciar',
+  'edt_ModderCorBotaoLog','edt_ModderCorBotaoConfig'
+];
+
+// Paleta de cores prontas pra escolher com um toque
+const PALETA_CORES = [
+  '#8783e6','#4b3fd6','#1c1ce0','#2563eb','#0ea5e9','#06b6d4',
+  '#16a34a','#65a30d','#84cc16','#f59e0b','#ea580c','#dc2626',
+  '#e6398f','#c026d3','#9333ea','#78716c','#1e293b','#000000','#ffffff'
+];
+
+// ---------- Menu / seções da tela de edição ----------
+function abrirSecao(nome) {
+  document.getElementById('menu-edicao').classList.add('oculto');
+  document.querySelectorAll('.secao-completa').forEach(s => s.classList.remove('ativa'));
+  document.getElementById('secao-' + nome).classList.add('ativa');
+}
+function fecharSecao() {
+  document.querySelectorAll('.secao-completa').forEach(s => s.classList.remove('ativa'));
+  document.getElementById('menu-edicao').classList.remove('oculto');
+}
+
+// ---------- Paleta de cores ----------
+function renderizarPaletasCores() {
+  document.querySelectorAll('.paleta-cores').forEach(container => {
+    const alvo = container.dataset.alvo;
+    container.innerHTML = PALETA_CORES.map(cor =>
+      `<button type="button" class="swatch-cor" style="background:${cor}" title="${cor}" onclick="selecionarCor('${alvo}', '${cor}')"></button>`
+    ).join('');
+  });
+}
+function selecionarCor(alvoId, cor) {
+  setVal(alvoId, cor);
+  atualizarPreviewCor(alvoId);
+}
+function atualizarPreviewCor(id) {
+  const preview = document.getElementById('preview_' + id);
+  const campo = document.getElementById(id);
+  if (preview && campo) preview.style.setProperty('--cor-atual', campo.value || 'transparent');
+}
+function atualizarTodasPreviewsCor() {
+  CAMPOS_COR.forEach(atualizarPreviewCor);
+}
+
+// ---------- Seletor de cor completo (caixa de gradiente + matiz + transparência) ----------
+const PRESETS_COR_SELETOR = ['3B82F6FF', '10B981FF', '8B5CF6FF', 'F59E0BFF', 'EF4444FF', '00000000'];
+let corAlvoId = null;
+let corHue = 250, corSat = 60, corBrilho = 80, corAlphaAtual = 255;
+
+function hsvParaRgb(h, s, v) {
+  s /= 100; v /= 100;
+  const c = v * s;
+  const x = c * (1 - Math.abs((h / 60) % 2 - 1));
+  const m = v - c;
+  let r, g, b;
+  if (h < 60) [r, g, b] = [c, x, 0];
+  else if (h < 120) [r, g, b] = [x, c, 0];
+  else if (h < 180) [r, g, b] = [0, c, x];
+  else if (h < 240) [r, g, b] = [0, x, c];
+  else if (h < 300) [r, g, b] = [x, 0, c];
+  else [r, g, b] = [c, 0, x];
+  return { r: Math.round((r + m) * 255), g: Math.round((g + m) * 255), b: Math.round((b + m) * 255) };
+}
+function rgbParaHsv(r, g, b) {
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min;
+  let h = 0;
+  if (d !== 0) {
+    if (max === r) h = 60 * (((g - b) / d) % 6);
+    else if (max === g) h = 60 * ((b - r) / d + 2);
+    else h = 60 * ((r - g) / d + 4);
+  }
+  if (h < 0) h += 360;
+  return { h, s: max === 0 ? 0 : (d / max) * 100, v: max * 100 };
+}
+function componenteHex(c) { return Math.round(c).toString(16).padStart(2, '0').toUpperCase(); }
+function parseHexCor(hex) {
+  hex = (hex || '').replace('#', '').trim();
+  if (hex.length === 3) hex = hex.split('').map(ch => ch + ch).join('');
+  if (hex.length === 6) hex += 'FF';
+  if (hex.length !== 8) return null;
+  const r = parseInt(hex.substring(0, 2), 16), g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16), a = parseInt(hex.substring(6, 8), 16);
+  if ([r, g, b, a].some(isNaN)) return null;
+  return { r, g, b, a };
+}
+function montarHexSaida(r, g, b, a) {
+  if (a >= 255) return '#' + componenteHex(r) + componenteHex(g) + componenteHex(b);
+  return '#' + componenteHex(r) + componenteHex(g) + componenteHex(b) + componenteHex(a);
+}
+
+function abrirSeletorCor(campoId) {
+  corAlvoId = campoId;
+  const rgba = parseHexCor(val(campoId)) || { r: 75, g: 63, b: 214, a: 255 };
+  const hsv = rgbParaHsv(rgba.r, rgba.g, rgba.b);
+  corHue = hsv.h; corSat = hsv.s; corBrilho = hsv.v; corAlphaAtual = rgba.a;
+  atualizarUiSeletor();
+  document.getElementById('modalCor').style.display = 'block';
+}
+
+function atualizarUiSeletor(atualizarHex) {
+  if (atualizarHex === undefined) atualizarHex = true;
+  const { r, g, b } = hsvParaRgb(corHue, corSat, corBrilho);
+  document.getElementById('corSvFundo').style.background = `linear-gradient(to right, #fff, hsl(${corHue},100%,50%))`;
+  document.getElementById('corAlcaSv').style.left = corSat + '%';
+  document.getElementById('corAlcaSv').style.top = (100 - corBrilho) + '%';
+  document.getElementById('corAlcaHue').style.left = (corHue / 360 * 100) + '%';
+  document.getElementById('corAlphaCor').style.background = `linear-gradient(to right, rgba(${r},${g},${b},0), rgba(${r},${g},${b},1))`;
+  document.getElementById('corAlcaAlpha').style.left = (corAlphaAtual / 255 * 100) + '%';
+  const hexSaida = montarHexSaida(r, g, b, corAlphaAtual);
+  if (atualizarHex) document.getElementById('corHexInput').value = hexSaida;
+  document.getElementById('corPreviewGrande').style.setProperty('--cor-atual', `rgba(${r},${g},${b},${corAlphaAtual / 255})`);
+}
+
+function digitouHexNoSeletor() {
+  const rgba = parseHexCor(document.getElementById('corHexInput').value);
+  if (!rgba) return;
+  const hsv = rgbParaHsv(rgba.r, rgba.g, rgba.b);
+  corHue = hsv.h; corSat = hsv.s; corBrilho = hsv.v; corAlphaAtual = rgba.a;
+  atualizarUiSeletor(false);
+}
+
+function selecionarPresetCorSeletor(hexSemHash) {
+  const rgba = parseHexCor(hexSemHash);
+  if (!rgba) return;
+  const hsv = rgbParaHsv(rgba.r, rgba.g, rgba.b);
+  corHue = hsv.h; corSat = hsv.s; corBrilho = hsv.v; corAlphaAtual = rgba.a;
+  atualizarUiSeletor();
+}
+
+function renderizarPresetsSeletorCor() {
+  const container = document.getElementById('corPresets');
+  if (!container) return;
+  container.innerHTML = PRESETS_COR_SELETOR.map(hex => {
+    const rgba = parseHexCor(hex);
+    const corCss = `rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a / 255})`;
+    const classeExtra = rgba.a === 0 ? ' cor-preset-alpha' : '';
+    const estilo = rgba.a === 0 ? `--cor-atual:${corCss}` : `background:${corCss}`;
+    return `<button type="button" class="cor-preset-btn${classeExtra}" style="${estilo}" onclick="selecionarPresetCorSeletor('${hex}')"></button>`;
+  }).join('');
+}
+
+function aplicarCorSelecionada() {
+  if (!corAlvoId) return;
+  setVal(corAlvoId, document.getElementById('corHexInput').value);
+  atualizarPreviewCor(corAlvoId);
+  fecharModal('modalCor');
+  mostrarToast('Cor aplicada.', 'sucesso');
+}
+
+// Arraste (mouse e toque) nas áreas do seletor de cor
+function configurarArrastoCor(elemento, aoMover) {
+  function posicionar(e) {
+    const rect = elemento.getBoundingClientRect();
+    let x = (e.clientX - rect.left) / rect.width;
+    let y = (e.clientY - rect.top) / rect.height;
+    x = Math.max(0, Math.min(1, x));
+    y = Math.max(0, Math.min(1, y));
+    aoMover(x, y);
+  }
+  elemento.addEventListener('pointerdown', (e) => {
+    elemento.setPointerCapture(e.pointerId);
+    posicionar(e);
+    const mover = (ev) => posicionar(ev);
+    const soltar = () => {
+      elemento.removeEventListener('pointermove', mover);
+      elemento.removeEventListener('pointerup', soltar);
+    };
+    elemento.addEventListener('pointermove', mover);
+    elemento.addEventListener('pointerup', soltar);
+  });
+}
 
 // ---------- Login (ilustração) ----------
 function entrarNoPainel() {
@@ -322,13 +844,13 @@ function entrarNoPainel() {
   const inicio = new Date('2023-01-01'); // troque pela data real de lançamento do seu painel
   const hoje = new Date();
   const dias = Math.floor((hoje - inicio) / (1000 * 60 * 60 * 24));
-  document.getElementById('diasOnline').textContent = `Site Online: ${dias} dias`;
+  document.getElementById('diasOnline').innerHTML = `<span class="ponto"></span>Site no ar há ${dias} dias`;
 })();
 
 // ---------- Carregar ----------
 function carregarJSON() {
   const texto = document.getElementById('entradaJSON').value.trim();
-  if (!texto) { alert('⚠️ Cole um JSON primeiro!'); return; }
+  if (!texto) { mostrarToast('Cole um JSON antes de continuar.', 'aviso'); return; }
   try {
     dados = JSON.parse(texto);
     if (!Array.isArray(dados.Servers)) dados.Servers = dados.Servers ? [dados.Servers] : [];
@@ -336,13 +858,15 @@ function carregarJSON() {
     if (!Array.isArray(dados.Udp)) dados.Udp = dados.Udp ? [dados.Udp] : [];
     preencherCampos();
     mostrarTela('edicao');
+    fecharSecao();
+    mostrarToast('Configuração carregada com sucesso.', 'sucesso');
   } catch (erro) {
-    alert('❌ Erro ao ler JSON! Verifique se colou certo.\n' + erro.message);
+    mostrarToast('JSON inválido — verifique se colou certo (' + erro.message + ')', 'erro');
   }
 }
 
 function preencherCampos() {
-  document.getElementById('versaoTopo').textContent = 'VERSÃO ' + (dados.Version ?? '—');
+  document.getElementById('versaoTopo').textContent = 'Versão ' + (dados.Version ?? '—');
   setVal('edt_Version', dados.Version);
   setVal('edt_PainelConecta5G', dados.PainelConecta5G);
   setVal('edt_ReleaseNotes', dados.ReleaseNotes);
@@ -374,6 +898,7 @@ function preencherCampos() {
   setVal('edt_DnsPrimario', dados.DnsPrimario);
   setVal('edt_DnsSecundario', dados.DnsSecundario);
 
+  atualizarTodasPreviewsCor();
   renderizarUdp();
   renderizarServidores();
   renderizarRedes();
@@ -508,6 +1033,7 @@ function gerarJSON() {
 
   document.getElementById('saidaJSON').value = JSON.stringify(dados, null, 4);
   mostrarTela('resultado');
+  mostrarToast('JSON gerado com sucesso.', 'sucesso');
 }
 
 // ---------- Auxiliares ----------
@@ -530,7 +1056,7 @@ function mostrarTela(nome) {
   document.getElementById('tela-resultado').classList.toggle('oculto', nome !== 'resultado');
 }
 function voltarParaColar() { mostrarTela('colar'); }
-function voltarEditar() { mostrarTela('edicao'); }
+function voltarEditar() { mostrarTela('edicao'); fecharSecao(); }
 function voltarInicio() {
   dados = null;
   document.getElementById('entradaJSON').value = '';
@@ -540,16 +1066,50 @@ function copiarSaida() {
   const campo = document.getElementById('saidaJSON');
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(campo.value).then(
-      () => alert('✅ Copiado! Agora cole no seu app!'),
-      () => { campo.select(); document.execCommand('copy'); alert('✅ Copiado!'); }
+      () => mostrarToast('Copiado! Agora é só colar no seu app.', 'sucesso'),
+      () => { campo.select(); document.execCommand('copy'); mostrarToast('Copiado!', 'sucesso'); }
     );
   } else {
     campo.select();
     document.execCommand('copy');
-    alert('✅ Copiado!');
+    mostrarToast('Copiado!', 'sucesso');
   }
 }
 function fecharModal(id) { document.getElementById(id).style.display = 'none'; }
+
+// ---------- Notificações (toast) ----------
+const ICONES_TOAST = {
+  sucesso: '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
+  erro: '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>',
+  aviso: '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>'
+};
+function mostrarToast(mensagem, tipo) {
+  tipo = tipo || 'sucesso';
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = 'toast toast-' + tipo;
+  toast.innerHTML = `<span class="toast-icone">${ICONES_TOAST[tipo] || ICONES_TOAST.sucesso}</span><span>${mensagem}</span>`;
+  container.appendChild(toast);
+  requestAnimationFrame(() => toast.classList.add('mostrar'));
+  setTimeout(() => {
+    toast.classList.remove('mostrar');
+    setTimeout(() => toast.remove(), 250);
+  }, 2800);
+}
+
+// ---------- Confirmação customizada (substitui o confirm() nativo) ----------
+let _acaoConfirmar = null;
+function confirmarAcao(mensagem, callback) {
+  document.getElementById('mensagemConfirmar').textContent = mensagem;
+  _acaoConfirmar = callback;
+  document.getElementById('modalConfirmar').style.display = 'block';
+}
+function executarConfirmacao() {
+  fecharModal('modalConfirmar');
+  const acao = _acaoConfirmar;
+  _acaoConfirmar = null;
+  if (acao) acao();
+}
 
 // ---------- Modal: Redes ----------
 function adicionarRede() {
@@ -570,7 +1130,9 @@ function editarRede(idx) {
   document.getElementById('modalRede').style.display = 'block';
 }
 function excluirRede(idx) {
-  if (confirm('Excluir essa rede?')) { dados.Networks.splice(idx, 1); renderizarRedes(); }
+  confirmarAcao('Excluir esta rede? Essa ação não pode ser desfeita.', () => {
+    dados.Networks.splice(idx, 1); renderizarRedes(); mostrarToast('Rede excluída.', 'sucesso');
+  });
 }
 function limparModalRede() {
   ['modal_Nome','modal_Flag','modal_Payload','modal_SNI','modal_TlsIP','modal_ProxyIP','modal_ProxyPort','modal_SlowChave','modal_SlowNs','modal_SlowDns'].forEach(id => setVal(id, ''));
@@ -585,6 +1147,7 @@ function salvarModalRede() {
   };
   if (idxRede === -1) dados.Networks.push(rede); else dados.Networks[idxRede] = rede;
   fecharModal('modalRede'); renderizarRedes();
+  mostrarToast(idxRede === -1 ? 'Rede adicionada.' : 'Rede atualizada.', 'sucesso');
 }
 
 // ---------- Modal: Servidores ----------
@@ -606,7 +1169,9 @@ function editarServidor(idx) {
   document.getElementById('modalServidor').style.display = 'block';
 }
 function excluirServidor(idx) {
-  if (confirm('Excluir esse servidor?')) { dados.Servers.splice(idx, 1); renderizarServidores(); }
+  confirmarAcao('Excluir este servidor? Essa ação não pode ser desfeita.', () => {
+    dados.Servers.splice(idx, 1); renderizarServidores(); mostrarToast('Servidor excluído.', 'sucesso');
+  });
 }
 function salvarModalServidor() {
   const srv = {
@@ -617,6 +1182,7 @@ function salvarModalServidor() {
   };
   if (idxServidor === -1) dados.Servers.push(srv); else dados.Servers[idxServidor] = srv;
   fecharModal('modalServidor'); renderizarServidores();
+  mostrarToast(idxServidor === -1 ? 'Servidor adicionado.' : 'Servidor atualizado.', 'sucesso');
 }
 
 // ---------- Modal: UDP ----------
@@ -633,13 +1199,29 @@ function editarUdp(idx) {
   document.getElementById('modalUdp').style.display = 'block';
 }
 function excluirUdp(idx) {
-  if (confirm('Excluir essa porta?')) { dados.Udp.splice(idx, 1); renderizarUdp(); }
+  confirmarAcao('Excluir esta porta UDP? Essa ação não pode ser desfeita.', () => {
+    dados.Udp.splice(idx, 1); renderizarUdp(); mostrarToast('Porta excluída.', 'sucesso');
+  });
 }
 function salvarModalUdp() {
   const item = { Porta: talvezNumero(val('modal_Udp_Porta')) };
   if (idxUdp === -1) dados.Udp.push(item); else dados.Udp[idxUdp] = item;
   fecharModal('modalUdp'); renderizarUdp();
+  mostrarToast(idxUdp === -1 ? 'Porta adicionada.' : 'Porta atualizada.', 'sucesso');
 }
+
+// Monta a paleta de cores assim que a página carrega
+renderizarPaletasCores();
+renderizarPresetsSeletorCor();
+configurarArrastoCor(document.getElementById('corSvCaixa'), (x, y) => {
+  corSat = x * 100; corBrilho = (1 - y) * 100; atualizarUiSeletor();
+});
+configurarArrastoCor(document.getElementById('corSliderHue'), (x) => {
+  corHue = x * 360; atualizarUiSeletor();
+});
+configurarArrastoCor(document.getElementById('corSliderAlpha'), (x) => {
+  corAlphaAtual = Math.round(x * 255); atualizarUiSeletor();
+});
 </script>
 </body>
 </html>
