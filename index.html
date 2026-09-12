@@ -215,8 +215,16 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--r
 .titulo-secao { font-family: var(--fonte-titulo); font-size: 16px; font-weight: 700; color: var(--roxo-tinta); }
 
 /* ---------- Campo de cor com paleta ---------- */
-.campo-cor { display: flex; gap: 8px; align-items: center; }
+.campo-cor { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .campo-cor input[type="text"] { flex: 1; }
+.btn-ajustar-cor {
+  display: flex; align-items: center; justify-content: center; gap: 6px; flex: 1 1 100%;
+  height: 40px; padding: 0 14px; border-radius: 12px; border: 1.5px solid var(--borda);
+  background: var(--superficie-sutil); color: var(--roxo-tinta); cursor: pointer;
+  font-family: var(--fonte-corpo); font-size: 13px; font-weight: 600;
+}
+.btn-ajustar-cor svg { width: 16px; height: 16px; }
+.btn-ajustar-cor:active { transform: scale(0.97); border-color: var(--roxo); }
 .preview-cor {
   width: 40px; height: 40px; border-radius: 12px; border: 1.5px solid var(--borda);
   flex-shrink: 0; background: #fff; cursor: pointer; padding: 0; -webkit-appearance: none;
@@ -230,12 +238,12 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--r
   content: ''; position: absolute; inset: 0; border-radius: 10px; background: var(--cor-atual, transparent);
 }
 .preview-cor:active { transform: scale(0.93); }
-.paleta-cores { display: flex; flex-wrap: wrap; gap: 11px; margin: 12px 0 8px; }
+.paleta-cores { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 12px 0 8px; }
 .swatch-cor {
-  width: 36px; height: 36px; border-radius: 11px; border: 2px solid rgba(255,255,255,0.7);
-  outline: 1px solid rgba(36,31,82,0.12); cursor: pointer; padding: 0; transition: transform .08s ease;
+  height: 40px; border-radius: 11px; border: 1.5px solid var(--borda);
+  cursor: pointer; padding: 0; transition: transform .08s ease; position: relative; overflow: hidden;
 }
-.swatch-cor:active { transform: scale(0.85); }
+.swatch-cor:active { transform: scale(0.95); }
 
 /* ---------- Seletor de cor completo (gradiente + matiz + transparência) ---------- */
 .cor-sv-caixa {
@@ -428,47 +436,47 @@ input, select { font-size: 16px; } /* evita zoom automático no iOS ao focar */
         <h3>🎨 Cores do App</h3>
 
         <label>ModderCorCaixaServ</label>
-        <div class="campo-cor"><input type="text" id="edt_ModderCorCaixaServ" oninput="atualizarPreviewCor('edt_ModderCorCaixaServ')"><button type="button" class="preview-cor" id="preview_edt_ModderCorCaixaServ" onclick="abrirSeletorCor('edt_ModderCorCaixaServ')" aria-label="Abrir seletor de cor"></button></div>
+        <div class="campo-cor"><input type="text" id="edt_ModderCorCaixaServ" oninput="atualizarPreviewCor('edt_ModderCorCaixaServ')"><button type="button" class="preview-cor" id="preview_edt_ModderCorCaixaServ" onclick="abrirSeletorCor('edt_ModderCorCaixaServ')" aria-label="Abrir seletor de cor"></button><button type="button" class="btn-ajustar-cor" onclick="abrirSeletorCor('edt_ModderCorCaixaServ')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="14" r="2"/><circle cx="12" cy="7" r="2"/><circle cx="18" cy="17" r="2"/><path d="M6 6v6M6 18v-2M12 3v2M12 11v10M18 3v12M18 21v-2"/></svg>Ajustar</button></div>
         <div class="paleta-cores" data-alvo="edt_ModderCorCaixaServ"></div>
 
         <label>ModderCorCaixaPay</label>
-        <div class="campo-cor"><input type="text" id="edt_ModderCorCaixaPay" oninput="atualizarPreviewCor('edt_ModderCorCaixaPay')"><button type="button" class="preview-cor" id="preview_edt_ModderCorCaixaPay" onclick="abrirSeletorCor('edt_ModderCorCaixaPay')" aria-label="Abrir seletor de cor"></button></div>
+        <div class="campo-cor"><input type="text" id="edt_ModderCorCaixaPay" oninput="atualizarPreviewCor('edt_ModderCorCaixaPay')"><button type="button" class="preview-cor" id="preview_edt_ModderCorCaixaPay" onclick="abrirSeletorCor('edt_ModderCorCaixaPay')" aria-label="Abrir seletor de cor"></button><button type="button" class="btn-ajustar-cor" onclick="abrirSeletorCor('edt_ModderCorCaixaPay')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="14" r="2"/><circle cx="12" cy="7" r="2"/><circle cx="18" cy="17" r="2"/><path d="M6 6v6M6 18v-2M12 3v2M12 11v10M18 3v12M18 21v-2"/></svg>Ajustar</button></div>
         <div class="paleta-cores" data-alvo="edt_ModderCorCaixaPay"></div>
 
         <label>ModderCorCaixaCentral</label>
-        <div class="campo-cor"><input type="text" id="edt_ModderCorCaixaCentral" oninput="atualizarPreviewCor('edt_ModderCorCaixaCentral')"><button type="button" class="preview-cor" id="preview_edt_ModderCorCaixaCentral" onclick="abrirSeletorCor('edt_ModderCorCaixaCentral')" aria-label="Abrir seletor de cor"></button></div>
+        <div class="campo-cor"><input type="text" id="edt_ModderCorCaixaCentral" oninput="atualizarPreviewCor('edt_ModderCorCaixaCentral')"><button type="button" class="preview-cor" id="preview_edt_ModderCorCaixaCentral" onclick="abrirSeletorCor('edt_ModderCorCaixaCentral')" aria-label="Abrir seletor de cor"></button><button type="button" class="btn-ajustar-cor" onclick="abrirSeletorCor('edt_ModderCorCaixaCentral')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="14" r="2"/><circle cx="12" cy="7" r="2"/><circle cx="18" cy="17" r="2"/><path d="M6 6v6M6 18v-2M12 3v2M12 11v10M18 3v12M18 21v-2"/></svg>Ajustar</button></div>
         <div class="paleta-cores" data-alvo="edt_ModderCorCaixaCentral"></div>
 
         <label>ModderCorCaixaConexao</label>
-        <div class="campo-cor"><input type="text" id="edt_ModderCorCaixaConexao" oninput="atualizarPreviewCor('edt_ModderCorCaixaConexao')"><button type="button" class="preview-cor" id="preview_edt_ModderCorCaixaConexao" onclick="abrirSeletorCor('edt_ModderCorCaixaConexao')" aria-label="Abrir seletor de cor"></button></div>
+        <div class="campo-cor"><input type="text" id="edt_ModderCorCaixaConexao" oninput="atualizarPreviewCor('edt_ModderCorCaixaConexao')"><button type="button" class="preview-cor" id="preview_edt_ModderCorCaixaConexao" onclick="abrirSeletorCor('edt_ModderCorCaixaConexao')" aria-label="Abrir seletor de cor"></button><button type="button" class="btn-ajustar-cor" onclick="abrirSeletorCor('edt_ModderCorCaixaConexao')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="14" r="2"/><circle cx="12" cy="7" r="2"/><circle cx="18" cy="17" r="2"/><path d="M6 6v6M6 18v-2M12 3v2M12 11v10M18 3v12M18 21v-2"/></svg>Ajustar</button></div>
         <div class="paleta-cores" data-alvo="edt_ModderCorCaixaConexao"></div>
 
         <label>ModderCorCaixaRegistro</label>
-        <div class="campo-cor"><input type="text" id="edt_ModderCorCaixaRegistro" oninput="atualizarPreviewCor('edt_ModderCorCaixaRegistro')"><button type="button" class="preview-cor" id="preview_edt_ModderCorCaixaRegistro" onclick="abrirSeletorCor('edt_ModderCorCaixaRegistro')" aria-label="Abrir seletor de cor"></button></div>
+        <div class="campo-cor"><input type="text" id="edt_ModderCorCaixaRegistro" oninput="atualizarPreviewCor('edt_ModderCorCaixaRegistro')"><button type="button" class="preview-cor" id="preview_edt_ModderCorCaixaRegistro" onclick="abrirSeletorCor('edt_ModderCorCaixaRegistro')" aria-label="Abrir seletor de cor"></button><button type="button" class="btn-ajustar-cor" onclick="abrirSeletorCor('edt_ModderCorCaixaRegistro')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="14" r="2"/><circle cx="12" cy="7" r="2"/><circle cx="18" cy="17" r="2"/><path d="M6 6v6M6 18v-2M12 3v2M12 11v10M18 3v12M18 21v-2"/></svg>Ajustar</button></div>
         <div class="paleta-cores" data-alvo="edt_ModderCorCaixaRegistro"></div>
 
         <label>ModderCorCaixaFerramentas</label>
-        <div class="campo-cor"><input type="text" id="edt_ModderCorCaixaFerramentas" oninput="atualizarPreviewCor('edt_ModderCorCaixaFerramentas')"><button type="button" class="preview-cor" id="preview_edt_ModderCorCaixaFerramentas" onclick="abrirSeletorCor('edt_ModderCorCaixaFerramentas')" aria-label="Abrir seletor de cor"></button></div>
+        <div class="campo-cor"><input type="text" id="edt_ModderCorCaixaFerramentas" oninput="atualizarPreviewCor('edt_ModderCorCaixaFerramentas')"><button type="button" class="preview-cor" id="preview_edt_ModderCorCaixaFerramentas" onclick="abrirSeletorCor('edt_ModderCorCaixaFerramentas')" aria-label="Abrir seletor de cor"></button><button type="button" class="btn-ajustar-cor" onclick="abrirSeletorCor('edt_ModderCorCaixaFerramentas')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="14" r="2"/><circle cx="12" cy="7" r="2"/><circle cx="18" cy="17" r="2"/><path d="M6 6v6M6 18v-2M12 3v2M12 11v10M18 3v12M18 21v-2"/></svg>Ajustar</button></div>
         <div class="paleta-cores" data-alvo="edt_ModderCorCaixaFerramentas"></div>
 
         <label>ModderCorCaixaUsuario</label>
-        <div class="campo-cor"><input type="text" id="edt_ModderCorCaixaUsuario" oninput="atualizarPreviewCor('edt_ModderCorCaixaUsuario')"><button type="button" class="preview-cor" id="preview_edt_ModderCorCaixaUsuario" onclick="abrirSeletorCor('edt_ModderCorCaixaUsuario')" aria-label="Abrir seletor de cor"></button></div>
+        <div class="campo-cor"><input type="text" id="edt_ModderCorCaixaUsuario" oninput="atualizarPreviewCor('edt_ModderCorCaixaUsuario')"><button type="button" class="preview-cor" id="preview_edt_ModderCorCaixaUsuario" onclick="abrirSeletorCor('edt_ModderCorCaixaUsuario')" aria-label="Abrir seletor de cor"></button><button type="button" class="btn-ajustar-cor" onclick="abrirSeletorCor('edt_ModderCorCaixaUsuario')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="14" r="2"/><circle cx="12" cy="7" r="2"/><circle cx="18" cy="17" r="2"/><path d="M6 6v6M6 18v-2M12 3v2M12 11v10M18 3v12M18 21v-2"/></svg>Ajustar</button></div>
         <div class="paleta-cores" data-alvo="edt_ModderCorCaixaUsuario"></div>
 
         <label>ModderCorCaixaSenha</label>
-        <div class="campo-cor"><input type="text" id="edt_ModderCorCaixaSenha" oninput="atualizarPreviewCor('edt_ModderCorCaixaSenha')"><button type="button" class="preview-cor" id="preview_edt_ModderCorCaixaSenha" onclick="abrirSeletorCor('edt_ModderCorCaixaSenha')" aria-label="Abrir seletor de cor"></button></div>
+        <div class="campo-cor"><input type="text" id="edt_ModderCorCaixaSenha" oninput="atualizarPreviewCor('edt_ModderCorCaixaSenha')"><button type="button" class="preview-cor" id="preview_edt_ModderCorCaixaSenha" onclick="abrirSeletorCor('edt_ModderCorCaixaSenha')" aria-label="Abrir seletor de cor"></button><button type="button" class="btn-ajustar-cor" onclick="abrirSeletorCor('edt_ModderCorCaixaSenha')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="14" r="2"/><circle cx="12" cy="7" r="2"/><circle cx="18" cy="17" r="2"/><path d="M6 6v6M6 18v-2M12 3v2M12 11v10M18 3v12M18 21v-2"/></svg>Ajustar</button></div>
         <div class="paleta-cores" data-alvo="edt_ModderCorCaixaSenha"></div>
 
         <label>ModderCorBotaoIniciar</label>
-        <div class="campo-cor"><input type="text" id="edt_ModderCorBotaoIniciar" oninput="atualizarPreviewCor('edt_ModderCorBotaoIniciar')"><button type="button" class="preview-cor" id="preview_edt_ModderCorBotaoIniciar" onclick="abrirSeletorCor('edt_ModderCorBotaoIniciar')" aria-label="Abrir seletor de cor"></button></div>
+        <div class="campo-cor"><input type="text" id="edt_ModderCorBotaoIniciar" oninput="atualizarPreviewCor('edt_ModderCorBotaoIniciar')"><button type="button" class="preview-cor" id="preview_edt_ModderCorBotaoIniciar" onclick="abrirSeletorCor('edt_ModderCorBotaoIniciar')" aria-label="Abrir seletor de cor"></button><button type="button" class="btn-ajustar-cor" onclick="abrirSeletorCor('edt_ModderCorBotaoIniciar')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="14" r="2"/><circle cx="12" cy="7" r="2"/><circle cx="18" cy="17" r="2"/><path d="M6 6v6M6 18v-2M12 3v2M12 11v10M18 3v12M18 21v-2"/></svg>Ajustar</button></div>
         <div class="paleta-cores" data-alvo="edt_ModderCorBotaoIniciar"></div>
 
         <label>ModderCorBotaoLog</label>
-        <div class="campo-cor"><input type="text" id="edt_ModderCorBotaoLog" oninput="atualizarPreviewCor('edt_ModderCorBotaoLog')"><button type="button" class="preview-cor" id="preview_edt_ModderCorBotaoLog" onclick="abrirSeletorCor('edt_ModderCorBotaoLog')" aria-label="Abrir seletor de cor"></button></div>
+        <div class="campo-cor"><input type="text" id="edt_ModderCorBotaoLog" oninput="atualizarPreviewCor('edt_ModderCorBotaoLog')"><button type="button" class="preview-cor" id="preview_edt_ModderCorBotaoLog" onclick="abrirSeletorCor('edt_ModderCorBotaoLog')" aria-label="Abrir seletor de cor"></button><button type="button" class="btn-ajustar-cor" onclick="abrirSeletorCor('edt_ModderCorBotaoLog')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="14" r="2"/><circle cx="12" cy="7" r="2"/><circle cx="18" cy="17" r="2"/><path d="M6 6v6M6 18v-2M12 3v2M12 11v10M18 3v12M18 21v-2"/></svg>Ajustar</button></div>
         <div class="paleta-cores" data-alvo="edt_ModderCorBotaoLog"></div>
 
         <label>ModderCorBotaoConfig</label>
-        <div class="campo-cor"><input type="text" id="edt_ModderCorBotaoConfig" oninput="atualizarPreviewCor('edt_ModderCorBotaoConfig')"><button type="button" class="preview-cor" id="preview_edt_ModderCorBotaoConfig" onclick="abrirSeletorCor('edt_ModderCorBotaoConfig')" aria-label="Abrir seletor de cor"></button></div>
+        <div class="campo-cor"><input type="text" id="edt_ModderCorBotaoConfig" oninput="atualizarPreviewCor('edt_ModderCorBotaoConfig')"><button type="button" class="preview-cor" id="preview_edt_ModderCorBotaoConfig" onclick="abrirSeletorCor('edt_ModderCorBotaoConfig')" aria-label="Abrir seletor de cor"></button><button type="button" class="btn-ajustar-cor" onclick="abrirSeletorCor('edt_ModderCorBotaoConfig')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="14" r="2"/><circle cx="12" cy="7" r="2"/><circle cx="18" cy="17" r="2"/><path d="M6 6v6M6 18v-2M12 3v2M12 11v10M18 3v12M18 21v-2"/></svg>Ajustar</button></div>
         <div class="paleta-cores" data-alvo="edt_ModderCorBotaoConfig"></div>
         <button class="btn btn-neutro" style="width:100%; margin-top:16px;" onclick="fecharSecao()">← Voltar ao menu</button>
       </div>
@@ -666,11 +674,14 @@ const CAMPOS_COR = [
   'edt_ModderCorBotaoLog','edt_ModderCorBotaoConfig'
 ];
 
-// Paleta de cores prontas pra escolher com um toque
+// Paleta de cores prontas pra escolher com um toque (mesmo conjunto curado do seletor completo)
 const PALETA_CORES = [
-  '#8783e6','#4b3fd6','#1c1ce0','#2563eb','#0ea5e9','#06b6d4',
-  '#16a34a','#65a30d','#84cc16','#f59e0b','#ea580c','#dc2626',
-  '#e6398f','#c026d3','#9333ea','#78716c','#1e293b','#000000','#ffffff'
+  { hex: '#3B82F6' },
+  { hex: '#10B981' },
+  { hex: '#8B5CF6' },
+  { hex: '#F59E0B' },
+  { hex: '#EF4444' },
+  { hex: '#00000000', transparente: true }
 ];
 
 // ---------- Menu / seções da tela de edição ----------
@@ -688,9 +699,12 @@ function fecharSecao() {
 function renderizarPaletasCores() {
   document.querySelectorAll('.paleta-cores').forEach(container => {
     const alvo = container.dataset.alvo;
-    container.innerHTML = PALETA_CORES.map(cor =>
-      `<button type="button" class="swatch-cor" style="background:${cor}" title="${cor}" onclick="selecionarCor('${alvo}', '${cor}')"></button>`
-    ).join('');
+    container.innerHTML = PALETA_CORES.map(c => {
+      if (c.transparente) {
+        return `<button type="button" class="swatch-cor cor-preset-alpha" style="--cor-atual:transparent" title="Transparente" onclick="selecionarCor('${alvo}', '${c.hex}')"></button>`;
+      }
+      return `<button type="button" class="swatch-cor" style="background:${c.hex}" title="${c.hex}" onclick="selecionarCor('${alvo}', '${c.hex}')"></button>`;
+    }).join('');
   });
 }
 function selecionarCor(alvoId, cor) {
